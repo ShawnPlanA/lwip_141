@@ -1,0 +1,908 @@
+HTTP server is starting at IP: 0.0.0.0
+##<<======= netif_set_ipaddr() =======>>##
+netif_set_ipaddr: netif address being changed
+netif: IP address of interface en set to 192.168.1.1
+##<<======= netif_set_netmask() =======>>##
+netif: netmask of interface en set to 255.255.255.0
+##<<======= netif_set_gw() =======>>##
+netif: GW address of interface en set to 192.168.1.8
+File: netif/ethernetif.c, Func: init_net_device, Line: 142
+
+ NetTxPacket = 0x81FE6840 
+
+ KSEG1ADDR(NetTxPacket) = 0xA1FE6840 
+
+ NetLoop,call eth_halt ! 
+Trying Eth0 (10/100-M)
+
+ Waitting for RX_DMA_BUSY status Start... done
+
+
+ ETH_STATE_ACTIVE!! 
+MAC  00:00:AA:BB:CC:DD
+netif: added interface en IP addr 192.168.1.1 netmask 255.255.255.0 gw 192.168.1.8
+====>[lwip_init_task:1792]
+Setup httpd starting
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2735]
+pbuf_alloc(length=238)
+pbuf_alloc: allocated pbuf 81fceda4
+pbuf_alloc(length=238) == 81fceda4
+pbuf_free(81fceda4)
+pbuf_free: deallocating 81fceda4
+
+====>[rx_Handler:1802]
+[rt2880_eth_recv:2696]
+Got ARP REQUEST, return our IP
+[rt2880_eth_recv:2696]
