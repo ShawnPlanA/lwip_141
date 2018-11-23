@@ -1,0 +1,22 @@
+From 5851cad11731cc4ad7bfdc92cce7e46edf6f8248 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 10:42:47 +0800
+Subject: =?UTF-8?q?=E5=8F=98=E8=89=B2?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+diff --git a/lwip-1.4.0/src/include/lwip/arch/cc.h b/lwip-1.4.0/src/include/lwip/arch/cc.h
+index 5f2877a..e69f879 100755
+--- a/lwip-1.4.0/src/include/lwip/arch/cc.h
++++ b/lwip-1.4.0/src/include/lwip/arch/cc.h
+@@ -74,7 +74,7 @@ typedef int sys_prot_t;
+ #ifndef LWIP_PLATFORM_ASSERT
+ #define LWIP_PLATFORM_ASSERT(x) \
+ 	do { \
+-		printf("Assertion \"%s\" failed at line %d in %s\r\n", x, __LINE__, __FILE__); \
++		printf("\x1b[32m Assertion \"%s\" failed at line %d in %s\x1b[0m\r\n", x, __LINE__, __FILE__); \
+ 	} while(0)
+ #endif
+ 

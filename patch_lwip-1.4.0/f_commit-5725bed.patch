@@ -1,0 +1,19 @@
+From 5725bedfe65face6c655c82bab450f643cd23315 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Fri, 23 Nov 2018 09:55:40 +0800
+Subject: ./tools/mkimage: invalid entry point -n
+
+
+diff --git a/Makefile b/Makefile
+index f3b9c2e..abde497 100644
+--- a/Makefile
++++ b/Makefile
+@@ -306,7 +306,7 @@ ifneq ($(MT7621_MP), y)
+ uboot.img:	uboot.bin
+ ifeq ($(CFG_ENV_IS), IN_SPI)
+ 		./tools/mkimage -A $(ARCH) -T standalone -C none \
+-		-a $(TEXT_BASE) -e $(shell readelf -h u-boot | grep "Entry" | awk '{print $$4}') \
++		-a $(TEXT_BASE) -e $(shell LANG=C readelf -h u-boot | grep "Entry" | awk '{print $$4}') \
+ 		-n "$(shell echo $(CFG_ENV_IS) | sed -e 's/IN_//') Flash Image" \
+ 		-r $(DRAM_TYPE) -s $(DRAM_TOTAL_WIDTH) -t $(DRAM_SIZE) -u $(DRAM_WIDTH) \
+ 		-y $(DRAM_SYSCFG0) -z $(DRAM_SYSCFG1) -w $(CPU_PLL_CFG) -d $< $@

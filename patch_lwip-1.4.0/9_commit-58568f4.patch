@@ -1,0 +1,18 @@
+From 58568f40b9958fe1b7a82d2855d4bbde94223708 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 10:08:20 +0800
+Subject: CFLAGS:   bss
+
+
+diff --git a/lwip-1.4.0/src/Makefile b/lwip-1.4.0/src/Makefile
+index 073ad9b..4530546 100644
+--- a/lwip-1.4.0/src/Makefile
++++ b/lwip-1.4.0/src/Makefile
+@@ -76,6 +76,7 @@ OBJS := $(CORE_OBJ)  $(API_OBJ) $(NETIF_OBJ)  $(ARCH_OBJ)
+ 
+ 
+ CFLAGS += \
++		-fno-zero-initialized-in-bss \
+ 		-I./include/ \
+ 		-I./include/ipv4/ \
+ 		-I./include/lwip/ \

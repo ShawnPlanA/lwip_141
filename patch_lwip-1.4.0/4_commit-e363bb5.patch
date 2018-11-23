@@ -1,0 +1,94 @@
+From e363bb56708202b42ff55343427948adab308efe Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 09:29:59 +0800
+Subject: select menu; mtd_size;
+
+
+diff --git a/Makefile b/Makefile
+index 471ff98..ea713d2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -49,6 +49,7 @@ CONFIG_CROSS_COMPILER_PATH ?= /opt/mips-2012.03/bin/
+ else
+ CONFIG_CROSS_COMPILER_PATH ?= /opt/buildroot-gcc342/bin
+ endif
++export CONFIG_CROSS_COMPILER_PATH
+ 
+ ifeq (include/config.mk,$(wildcard include/config.mk))
+ # load ARCH, BOARD, and CPU configuration
+@@ -192,6 +193,11 @@ endif
+ LIBS += lib_$(ARCH)/lib$(ARCH).a
+ LIBS += net/libnet.a
+ 
++###################### add by Shawn.Luo
++LIBS += lwip-1.4.0/src/liblwip.a
++#LIBS += lwip-1.4.0/test/unit/liblwipapp.a
++
++
+ #LIBS += rtc/librtc.a
+ LIBS += drivers/libdrivers.a
+ 
+diff --git a/include/configs/rt2880.h b/include/configs/rt2880.h
+index 91648e8..bdcea72 100644
+--- a/include/configs/rt2880.h
++++ b/include/configs/rt2880.h
+@@ -92,12 +92,14 @@ extern unsigned int  CFG_BLOCKSIZE;
+ 
+ #define SERIAL_CLOCK_DIVISOR 16
+ 
+-#define CONFIG_BOOTDELAY	5	/* autoboot after 5 seconds	*/
++#define CONFIG_BOOTDELAY	3	/* autoboot after 5 seconds	*/
+ 
+ #define CONFIG_BAUDRATE		57600
+ 
+-#define CONFIG_SERVERIP 10.10.10.3
+-#define CONFIG_IPADDR 10.10.10.123
++#define CONFIG_BOOTFILE "uboot.bin"
++
++#define CONFIG_SERVERIP 192.168.1.100
++#define CONFIG_IPADDR 192.168.1.1
+ #define CONFIG_ETHADDR "00:AA:BB:CC:DD:10"
+ /* valid baudrates */
+ #define CFG_BAUDRATE_TABLE	{ 9600, 19200, 38400, 57600, 115200 }
+@@ -330,7 +332,8 @@ extern unsigned int  CFG_BLOCKSIZE;
+ #define CFG_CONFIG_SIZE		(CFG_BLOCKSIZE<<2)
+ #define CFG_FACTORY_SIZE	(CFG_BLOCKSIZE<<1)
+ #else
+-#define CFG_BOOTLOADER_SIZE	0x30000
++//#define CFG_BOOTLOADER_SIZE	0x30000 // 192 KB
++#define CFG_BOOTLOADER_SIZE	0x40000 // for ml uboot
+ #define CFG_CONFIG_SIZE		0x10000
+ #define CFG_FACTORY_SIZE	0x10000
+ #endif
+diff --git a/lib_mips/board.c b/lib_mips/board.c
+index ff080a9..f89c413 100644
+--- a/lib_mips/board.c
++++ b/lib_mips/board.c
+@@ -839,6 +839,7 @@ void board_init_f(ulong bootflag)
+ #define SEL_LOAD_LINUX_WRITE_FLASH      2
+ #define SEL_BOOT_FLASH                  3
+ #define SEL_ENTER_CLI                   4
++#define SEL_LWIP				5
+ #define SEL_LOAD_BOOT_WRITE_FLASH_BY_SERIAL 7
+ #define SEL_LOAD_BOOT_SDRAM             8
+ #define SEL_LOAD_BOOT_WRITE_FLASH       9
+@@ -853,6 +854,7 @@ void OperationSelect(void)
+ #ifdef RALINK_CMDLINE
+ 	printf("   %d: Entr boot command line interface.\n", SEL_ENTER_CLI);
+ #endif // RALINK_CMDLINE //
++	printf("   %d: Enter Lwip Httpd\n", SEL_LWIP);
+ #ifdef RALINK_UPGRADE_BY_SERIAL
+ 	printf("   %d: Load Boot Loader code then write to Flash via Serial. \n", SEL_LOAD_BOOT_WRITE_FLASH_BY_SERIAL);
+ #endif // RALINK_UPGRADE_BY_SERIAL //
+@@ -2071,6 +2073,11 @@ void board_init_r (gd_t *id, ulong dest_addr)
+ 			do_reset(cmdtp, 0, argc, argv);
+ 			break;
+ #endif // RALINK_UPGRADE_BY_SERIAL //
++		case '5':
++			printf("case  LWIP\n");
++			eth_initialize(gd->bd);
++			NetLoopHttpd();
++			break;
+ 		case '8':
+ 			printf("   \n%d: System Load UBoot to SDRAM via TFTP. \n", SEL_LOAD_BOOT_SDRAM);
+ 			tftp_config(SEL_LOAD_BOOT_SDRAM, argv);

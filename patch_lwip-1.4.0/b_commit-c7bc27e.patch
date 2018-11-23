@@ -1,0 +1,663 @@
+From c7bc27e3dc4e208117397d28a1753adf750d2d45 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 17:07:41 +0800
+Subject: no panic...hehe
+
+
+diff --git a/drivers/rt2880_eth.c b/drivers/rt2880_eth.c
+old mode 100644
+new mode 100755
+index af35666..574d940
+--- a/drivers/rt2880_eth.c
++++ b/drivers/rt2880_eth.c
+@@ -2693,6 +2693,7 @@ static int rt2880_eth_recv(struct eth_device* dev)
+ 		}
+ 		else {
+ 			NetReceive((void *)KSEG1ADDR(NetRxPackets[rx_dma_owner_idx0]), length );
++			printf("[%s:%u]\n", __FUNCTION__, __LINE__);
+ 		}
+ 
+ #if  defined (RX_SCATTER_GATTER_DMA)
+@@ -2731,6 +2732,7 @@ static int rt2880_eth_recv(struct eth_device* dev)
+ 		//printf("\n RX_DRX_IDX0 = %d \n",RALINK_REG(RX_DRX_IDX0));
+ 		//printf("\n ************************************************* \n");
+ 	}
++	printf("[%s:%u]\n", __FUNCTION__, __LINE__);
+ 	return length;
+ }
+ 
+diff --git a/lwip-1.4.0/src/Makefile b/lwip-1.4.0/src/Makefile
+index 4530546..dab90d6 100644
+--- a/lwip-1.4.0/src/Makefile
++++ b/lwip-1.4.0/src/Makefile
+@@ -81,7 +81,7 @@ CFLAGS += \
+ 		-I./include/ipv4/ \
+ 		-I./include/lwip/ \
+ 		-I./include/netif/ \
+-		-I$(CONFIG_CROSS_COMPILER_PATH)/../include/
++		-I$(CONFIG_CROSS_COMPILER_PATH)/../include/ 
+ #	-I../include \
+ #	-I../include/linux \
+ #####################################################
+diff --git a/lwip-1.4.0/src/arch/sys_arch.c b/lwip-1.4.0/src/arch/sys_arch.c
+index ad6eca7..a866965 100755
+--- a/lwip-1.4.0/src/arch/sys_arch.c
++++ b/lwip-1.4.0/src/arch/sys_arch.c
+@@ -34,4 +34,5 @@ void sys_init(void)
+ u32_t sys_now(void)
+ {
+ 	return get_timer(0) / 1000;
++//	return get_timer(0);
+ }
+diff --git a/lwip-1.4.0/src/core/pbuf.c b/lwip-1.4.0/src/core/pbuf.c
+index 681344b..057cdc7 100644
+--- a/lwip-1.4.0/src/core/pbuf.c
++++ b/lwip-1.4.0/src/core/pbuf.c
+@@ -552,7 +552,7 @@ pbuf_header(struct pbuf *p, s16_t header_size_increment)
+   p->len += header_size_increment;
+   p->tot_len += header_size_increment;
+ 
+-  LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_header: old %p new %p (%"S16_F")\n",
++  LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("  [pbuf_header]: old %p new %p (%"S16_F")\n",
+     (void *)payload, (void *)p->payload, header_size_increment));
+ 
+   return 0;
+@@ -632,7 +632,7 @@ pbuf_free(struct pbuf *p)
+     if (ref == 0) {
+       /* remember next pbuf in chain for next iteration */
+       q = p->next;
+-      LWIP_DEBUGF( PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_free: deallocating %p\n", (void *)p));
++      LWIP_DEBUGF( PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_free: deallocating %p\n\n", (void *)p));
+       type = p->type;
+ #if LWIP_SUPPORT_CUSTOM_PBUF
+       /* is this a custom pbuf? */
+diff --git a/lwip-1.4.0/src/include/ipv4/lwip/ip_addr.h b/lwip-1.4.0/src/include/ipv4/lwip/ip_addr.h
+old mode 100644
+new mode 100755
+index 77f84e0..cc2435e
+--- a/lwip-1.4.0/src/include/ipv4/lwip/ip_addr.h
++++ b/lwip-1.4.0/src/include/ipv4/lwip/ip_addr.h
+@@ -198,6 +198,7 @@ extern const ip_addr_t ip_addr_broadcast;
+ #define ip_addr_cmp(addr1, addr2) ((addr1)->addr == (addr2)->addr)
+ 
+ #define ip_addr_isany(addr1) ((addr1) == NULL || (addr1)->addr == IPADDR_ANY)
++//#define ip_addr_isany(addr1) ((addr1) == NULL || (addr1)->addr == IPADDR_ANY || (addr1)->addr == IPADDR_BROADCAST) //
+ 
+ #define ip_addr_isbroadcast(ipaddr, netif) ip4_addr_isbroadcast((ipaddr)->addr, (netif))
+ u8_t ip4_addr_isbroadcast(u32_t addr, const struct netif *netif);
+diff --git a/lwip-1.4.0/src/include/lwip/lwipopts.h b/lwip-1.4.0/src/include/lwip/lwipopts.h
+index 6ca058c..247c0c4 100755
+--- a/lwip-1.4.0/src/include/lwip/lwipopts.h
++++ b/lwip-1.4.0/src/include/lwip/lwipopts.h
+@@ -10,7 +10,7 @@
+ #define MEM_ALIGNMENT           4  
+ 
+ //MEM_SIZE:heap内存的大小,如果在应用中有大量数据发送的话这个值最好设置大一点 
+-#define MEM_SIZE                16000 //内存堆大小
++#define MEM_SIZE                (32 * 1024 * 1024)  //内存堆大小 32MB，根据实际情况来决定
+ 
+ //MEMP_NUM_PBUF:memp结构的pbuf数量,如果应用从ROM或者静态存储区发送大量数据时,这个值应该设置大一点
+ #define MEMP_NUM_PBUF           10
+@@ -25,18 +25,19 @@
+ #define MEMP_NUM_TCP_PCB_LISTEN 6
+ 
+ //MEMP_NUM_TCP_SEG:最多同时在队列中的TCP段数量
+-#define MEMP_NUM_TCP_SEG        15
++#define MEMP_NUM_TCP_SEG        TCP_SND_QUEUELEN
+ 
+ //MEMP_NUM_SYS_TIMEOUT:能够同时激活的timeout个数
+-#define MEMP_NUM_SYS_TIMEOUT    8
++#define MEMP_NUM_SYS_TIMEOUT    16
+ 
+ 
+ /* ---------- Pbuf选项---------- */
+ //PBUF_POOL_SIZE:pbuf内存池个数. 
+-#define PBUF_POOL_SIZE          20
++#define PBUF_POOL_SIZE          400 /* pbuf tests need ~200KByte */
++
+ 
+ //PBUF_POOL_BUFSIZE:每个pbuf内存池大小. 
+-#define PBUF_POOL_BUFSIZE       512
++//#define PBUF_POOL_BUFSIZE       512
+ 
+ 
+ /* ---------- TCP选项---------- */
+@@ -50,13 +51,13 @@
+ #define TCP_MSS                 (1500 - 40)	  //TCP_MSS = (MTU - IP报头大小 - TCP报头大小
+ 
+ //TCP发送缓冲区大小(bytes).
+-#define TCP_SND_BUF             (4*TCP_MSS)
++#define TCP_SND_BUF             (12 * TCP_MSS)
+ 
+ //TCP_SND_QUEUELEN: TCP发送缓冲区大小(pbuf).这个值最小为(2 * TCP_SND_BUF/TCP_MSS) 
+-#define TCP_SND_QUEUELEN        (2* TCP_SND_BUF/TCP_MSS)
++#define TCP_SND_QUEUELEN        40 //(2* TCP_SND_BUF/TCP_MSS)
+ 
+ //TCP发送窗口
+-#define TCP_WND                 (2*TCP_MSS)
++#define TCP_WND                 (10 * TCP_MSS)
+ 
+ 
+ /* ---------- ICMP选项---------- */
+@@ -135,6 +136,6 @@
+    ----------------------------------------
+ */
+ #define LWIP_DEBUG                     1 //开启DEBUG选项
+-#define ICMP_DEBUG                      LWIP_DBG_OFF //开启/关闭ICMPdebug
++#define ICMP_DEBUG                      LWIP_DBG_ON //开启/关闭ICMPdebug
+ 
+ #endif /* __LWIPOPTS_H__ */
+diff --git a/lwip-1.4.0/src/include/netif/etharp.h b/lwip-1.4.0/src/include/netif/etharp.h
+old mode 100644
+new mode 100755
+index 691575f..fbc9ffc
+--- a/lwip-1.4.0/src/include/netif/etharp.h
++++ b/lwip-1.4.0/src/include/netif/etharp.h
+@@ -131,7 +131,7 @@ PACK_STRUCT_END
+ #define SIZEOF_ETHARP_HDR 28
+ #define SIZEOF_ETHARP_PACKET (SIZEOF_ETH_HDR + SIZEOF_ETHARP_HDR)
+ 
+-/** 5 seconds period */
++/** 5 seconds period 5秒 */
+ #define ARP_TMR_INTERVAL 5000
+ 
+ #define ETHTYPE_ARP       0x0806U
+diff --git a/lwip-1.4.0/src/netif/etharp.c b/lwip-1.4.0/src/netif/etharp.c
+old mode 100644
+new mode 100755
+index ba05200..466e545
+--- a/lwip-1.4.0/src/netif/etharp.c
++++ b/lwip-1.4.0/src/netif/etharp.c
+@@ -724,15 +724,40 @@ etharp_arp_input(struct netif *netif, struct eth_addr *ethaddr, struct pbuf *p)
+    * structure packing (not using structure copy which breaks strict-aliasing rules). */
+   IPADDR2_COPY(&sipaddr, &hdr->sipaddr);
+   IPADDR2_COPY(&dipaddr, &hdr->dipaddr);
++  LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("S_ip address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
++	ip4_addr1_16(&sipaddr),
++	ip4_addr2_16(&sipaddr),
++	ip4_addr3_16(&sipaddr),
++	ip4_addr4_16(&sipaddr)));
++  LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("D_ip address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
++	ip4_addr1_16(&dipaddr),
++	ip4_addr2_16(&dipaddr),
++	ip4_addr3_16(&dipaddr),
++	ip4_addr4_16(&dipaddr)));
+ 
+   /* this interface is not configured? */
+   if (ip_addr_isany(&netif->ip_addr)) {
+     for_us = 0;
++	printf("[%s:%u]\n", __FUNCTION__, __LINE__);
+   } else {
+     /* ARP packet directed to us? */
++    printf("[%s:%u]\n", __FUNCTION__, __LINE__);
++	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: IP address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
++	  ip4_addr1_16(&netif->ip_addr),
++	  ip4_addr2_16(&netif->ip_addr),
++	  ip4_addr3_16(&netif->ip_addr),
++	  ip4_addr4_16(&netif->ip_addr)));
++	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: DIP address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
++	  ip4_addr1_16(&dipaddr),
++	  ip4_addr2_16(&dipaddr),
++	  ip4_addr3_16(&dipaddr),
++	  ip4_addr4_16(&dipaddr)));
++
+     for_us = (u8_t)ip_addr_cmp(&dipaddr, &(netif->ip_addr));
+   }
+ 
++  printf("====>   for_us = %d\n", for_us);
++
+   /* ARP message directed to us?
+       -> add IP address in ARP cache; assume requester wants to talk to us,
+          can result in directly sending the queued packets for this host.
+diff --git a/lwip-1.4.0/src/netif/ethernetif.c b/lwip-1.4.0/src/netif/ethernetif.c
+old mode 100644
+new mode 100755
+index a5b7d99..933218d
+--- a/lwip-1.4.0/src/netif/ethernetif.c
++++ b/lwip-1.4.0/src/netif/ethernetif.c
+@@ -45,7 +45,7 @@
+ 
+ #include "lwip/opt.h"
+ 
+-#if 0 /* don't build, this is only a skeleton, see previous comment */
++#if 1 /* don't build, this is only a skeleton, see previous comment */
+ 
+ #include "lwip/def.h"
+ #include "lwip/mem.h"
+@@ -54,12 +54,49 @@
+ #include <lwip/stats.h>
+ #include <lwip/snmp.h>
+ #include "netif/etharp.h"
+-#include "netif/ppp_oe.h"
++
++#include <common.h>
++#include "ethernetif.h"
++#include <net.h>
++#include <asm/addrspace.h>
+ 
+ /* Define those to better describe your network interface. */
+ #define IFNAME0 'e'
+ #define IFNAME1 'n'
+ 
++uchar		NetOurEther[6] = {0};		/* Our ethernet address			*/
++volatile uchar *NetRxPackets[PKTBUFSRX] = {NULL}; /* Receive packets			*/
++extern volatile uchar  *NetTxPacket; // volatile uchar *NetTxPacket = 0;	/* THE transmit packet */
++
++/**********************************************************************/
++
++IPaddr_t	NetArpWaitPacketIP = {0};
++IPaddr_t	NetArpWaitReplyIP = {0};
++
++uchar	    *NetArpWaitPacketMAC;	/* MAC address of waiting packet's destination	*/
++uchar       *NetArpWaitTxPacket;	/* THE transmit packet			*/
++int			NetArpWaitTxPacketSize;
++uchar 		NetArpWaitPacketBuf[PKTSIZE_ALIGN + PKTALIGN];
++ulong		NetArpWaitTimerStart;
++
++extern volatile uchar * NetTxPacket;		/* THE transmit packet		*/
++extern volatile uchar * NetRxPkt;		/* Current receive packet	*/
++extern int		NetRxPktLen;		/* Current rx packet length	*/
++
++int			NetArpWaitTry;
++
++//===================================================
++/*=======================================*/
++extern VALID_BUFFER_STRUCT  rt2880_free_buf_list;
++//kaiker
++extern BUFFER_ELEM *rt2880_free_buf_entry_dequeue(VALID_BUFFER_STRUCT *hdr);
++//定义发送接受缓冲区
++u8 lwip_buf[1500*2] = {0};
++// max frame length which the conroller will accept:
++#define   MAX_FRAMELEN    1518
++// (note: maximum ethernet frame length would be 1518)
++
++
+ /**
+  * Helper struct to hold private data used to operate your ethernet interface.
+  * Keeping the ethernet address of the MAC in this struct is not necessary
+@@ -72,7 +109,8 @@ struct ethernetif {
+ };
+ 
+ /* Forward declarations. */
+-static void  ethernetif_input(struct netif *netif);
++err_t ethernetif_input(struct netif *netif); //static void  ethernetif_input(struct netif *netif);
++
+ 
+ /**
+  * In this function, the hardware should be initialized.
+@@ -81,27 +119,121 @@ static void  ethernetif_input(struct netif *netif);
+  * @param netif the already initialized lwip network interface structure
+  *        for this ethernetif
+  */
++
++extern IPaddr_t   tmp_ip_addr;
++
++void init_net_device(void)
++{
++	DECLARE_GLOBAL_DATA_PTR; // 注意: 只能 定义一次
++	bd_t *bd = gd->bd;
++	unsigned char ethinit_attempt = 0;
++
++#ifdef CONFIG_NET_MULTI
++	  NetRestarted = 0;
++	  NetDevExists = 0;
++#endif
++	  /* XXX problem with bss workaround */
++	  NetArpWaitPacketMAC = NULL;
++	  NetArpWaitTxPacket = NULL;
++	  NetArpWaitPacketIP = 0;
++	  NetArpWaitReplyIP = 0;
++	  NetArpWaitTxPacket = NULL;
++#ifdef DEBUG	
++	 printf("File: %s, Func: %s, Line: %d\n", __FILE__,__FUNCTION__ , __LINE__);
++#endif   
++
++	  if (!NetTxPacket) {
++		  int i;
++		  BUFFER_ELEM *buf;
++		  /*
++		   *  Setup packet buffers, aligned correctly.
++		   */
++		  buf = rt2880_free_buf_entry_dequeue(&rt2880_free_buf_list); 
++		  NetTxPacket = buf->pbuf;
++
++		  debug("\n NetTxPacket = 0x%08X \n",NetTxPacket);
++		  for (i = 0; i < NUM_RX_DESC; i++) {
++  
++			  buf = rt2880_free_buf_entry_dequeue(&rt2880_free_buf_list); 
++			  if(buf == NULL)
++			  {
++				  printf("\n Packet Buffer is empty ! \n");
++				  return (-1);
++			  }
++			  NetRxPackets[i] = buf->pbuf;
++			  //printf("\n NetRxPackets[%d] = 0x%08X\n",i,NetRxPackets[i]);
++		  }
++	  }
++
++	NetTxPacket = KSEG1ADDR(NetTxPacket);
++  
++	  printf("\n KSEG1ADDR(NetTxPacket) = 0x%08X \n",NetTxPacket);
++  
++	  if (!NetArpWaitTxPacket) {
++		  NetArpWaitTxPacket = &NetArpWaitPacketBuf[0] + (PKTALIGN - 1);
++		  NetArpWaitTxPacket -= (ulong)NetArpWaitTxPacket % PKTALIGN;
++		  NetArpWaitTxPacketSize = 0;
++	}
++
++restart:		  
++	  printf("\n NetLoop,call eth_halt ! \n");
++	  eth_halt();
++#ifdef CONFIG_NET_MULTI
++	  eth_set_current();
++#endif
++	  while( ethinit_attempt < 10 ) {
++	  	  if ( eth_init( bd ) ) {
++		  	  ethinit_attempt = 0;
++		  	  break;
++		    } else {
++		  	  ethinit_attempt++;
++		  	  eth_halt();
++		  	  udelay( 1000000 );
++		    }
++	  }
++  
++	  if ( ethinit_attempt > 0 ) {
++		  eth_halt();
++		  printf( "## Error: couldn't initialize eth (cable disconnected?)!\n\n" );
++		  return( -1 );
++	  }
++
++#ifdef CONFIG_NET_MULTI
++	  memcpy (NetOurEther, eth_get_dev()->enetaddr, 6);
++#else
++	  memcpy (NetOurEther, bd->bi_enetaddr, 6);
++#endif
++}
++
+ static void
+ low_level_init(struct netif *netif)
+ {
+   struct ethernetif *ethernetif = netif->state;
+   
++  init_net_device(); // 初始化网卡, do  in  NetLoopHttpd();
++
+   /* set MAC hardware address length */
+   netif->hwaddr_len = ETHARP_HWADDR_LEN;
+ 
+   /* set MAC hardware address */
+-  netif->hwaddr[0] = ;
+-  ...
+-  netif->hwaddr[5] = ;
++  netif->hwaddr[0] =NetOurEther[0];
++  netif->hwaddr[1] =NetOurEther[1];
++  netif->hwaddr[2] =NetOurEther[2];
++  netif->hwaddr[3] =NetOurEther[3];
++  netif->hwaddr[4] =NetOurEther[4];
++  netif->hwaddr[5] =NetOurEther[5];
++  printf("MAC  %02X:%02X:%02X:%02X:%02X:%02X\n", netif->hwaddr[0], netif->hwaddr[1],
++  	netif->hwaddr[2], netif->hwaddr[3], netif->hwaddr[4], netif->hwaddr[5]);
+ 
+   /* maximum transfer unit */
+-  netif->mtu = 1500;
++  netif->mtu = 1500;//最大允许传输单元，允许该网卡广播和ARP功能
+   
+   /* device capabilities */
+   /* don't set NETIF_FLAG_ETHARP if this device is not an ethernet one */
+   netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP;
+  
+   /* Do whatever else is needed to initialize interface. */  
++  // [TODO]
+ }
+ 
+ /**
+@@ -124,22 +256,33 @@ static err_t
+ low_level_output(struct netif *netif, struct pbuf *p)
+ {
+   struct ethernetif *ethernetif = netif->state;
+-  struct pbuf *q;
++  struct pbuf *q = {0};
++  unsigned int i = 0; 
+ 
+-  initiate transfer();
++  // [TODO] initiate transfer();  初始化 网卡的Tx函数
+   
+ #if ETH_PAD_SIZE
+   pbuf_header(p, -ETH_PAD_SIZE); /* drop the padding word */
+ #endif
+ 
++#if 0
+   for(q = p; q != NULL; q = q->next) {
+     /* Send the data from the pbuf to the interface, one pbuf at a
+        time. The size of the data in each pbuf is kept in the ->len
+        variable. */
+-    send data from(q->payload, q->len);
++    // [TODO]  send data from(q->payload, q->len); 网卡 发送数据
++    {
++      memcpy(&NetTxPacket[i], (u8_t*)q->payload, q->len); 
++      i = i + q->len;
++      eth_send(NetTxPacket, i);
++    }
+   }
++#else
++      pbuf_copy_partial(p, /* mac_send_buffer */ NetTxPacket, p->tot_len, 0);
++      eth_send(NetTxPacket, p->tot_len);
++#endif
+ 
+-  signal that packet should be sent();
++  //[TODO] signal that packet should be sent();
+ 
+ #if ETH_PAD_SIZE
+   pbuf_header(p, ETH_PAD_SIZE); /* reclaim the padding word */
+@@ -162,26 +305,30 @@ static struct pbuf *
+ low_level_input(struct netif *netif)
+ {
+   struct ethernetif *ethernetif = netif->state;
+-  struct pbuf *p, *q;
++  struct pbuf *p = {NULL}, *q = {NULL};
+   u16_t len;
++  unsigned int i =0;
+ 
+   /* Obtain the size of the packet and put it into the "len"
+      variable. */
+-  len = ;
++  // [TODO] len = ;
++  len =  eth_rx();
+ 
+ #if ETH_PAD_SIZE
+   len += ETH_PAD_SIZE; /* allow room for Ethernet padding */
+ #endif
+ 
+   /* We allocate a pbuf chain of pbufs from the pool. */
+-  p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
+-  
++if(NetRxPkt != NULL)
++  p = pbuf_alloc(PBUF_RAW, NetRxPktLen, PBUF_POOL);
++
+   if (p != NULL) {
+ 
+ #if ETH_PAD_SIZE
+     pbuf_header(p, -ETH_PAD_SIZE); /* drop the padding word */
+ #endif
+ 
++#if 0
+     /* We iterate over the pbuf chain until we have read the entire
+      * packet into the pbuf. */
+     for(q = p; q != NULL; q = q->next) {
+@@ -193,9 +340,15 @@ low_level_input(struct netif *netif)
+        * actually received size. In this case, ensure the tot_len member of the
+        * pbuf is the sum of the chained pbuf len members.
+        */
+-      read data into(q->payload, q->len);
++      //[TODO] read data into(q->payload, q->len);
++      memcpy((u8_t*)q->payload, (u8_t*)&NetRxPkt[i], q->len);
++      i = i + q->len;
+     }
+-    acknowledge that packet has been read();
++    //[TODO] acknowledge that packet has been read();
++#else
++      pbuf_take(p, NetRxPkt,  NetRxPktLen); // [NetRxPkt : Rx数据包指针];   [NetRxPktLen : Rx数据包的长度]
++#endif
++
+ 
+ #if ETH_PAD_SIZE
+     pbuf_header(p, ETH_PAD_SIZE); /* reclaim the padding word */
+@@ -203,7 +356,7 @@ low_level_input(struct netif *netif)
+ 
+     LINK_STATS_INC(link.recv);
+   } else {
+-    drop packet();
++    //[TODO] drop packet();
+     LINK_STATS_INC(link.memerr);
+     LINK_STATS_INC(link.drop);
+   }
+@@ -220,19 +373,23 @@ low_level_input(struct netif *netif)
+  *
+  * @param netif the lwip network interface structure for this ethernetif
+  */
+-static void
++err_t // static void
+ ethernetif_input(struct netif *netif)
+ {
+-  struct ethernetif *ethernetif;
+-  struct eth_hdr *ethhdr;
+-  struct pbuf *p;
++  struct ethernetif *ethernetif = NULL;
++  struct eth_hdr *ethhdr = NULL;
++  struct pbuf *p = NULL;
+ 
+   ethernetif = netif->state;
+ 
+   /* move received packet into a new pbuf */
+   p = low_level_input(netif);
+   /* no packet could be read, silently ignore this */
+-  if (p == NULL) return;
++  if (p == NULL)
++  {
++  	printf("[ERR]_p=NULL; low_level_input()\n");
++  	return;
++  }
+   /* points to packet payload, which starts with an Ethernet header */
+   ethhdr = p->payload;
+ 
+diff --git a/net/net.c b/net/net.c
+old mode 100644
+new mode 100755
+index 78b5104..10f1145
+--- a/net/net.c
++++ b/net/net.c
+@@ -1290,7 +1290,7 @@ NetReceive(volatile uchar * inpkt, int len)
+ 		}
+ 
+ 		if (NetOurIP == 0) {
+-			printf("\n NetOurIP \n");
++			printf("\x1b[32m \n _NetOurIP \n \x1b[0m");
+ 			return;
+ 		}
+ 
+@@ -1406,7 +1406,7 @@ NetReceive(volatile uchar * inpkt, int len)
+ 			return;
+ 		}
+ 		if (!NetCksumOk((uchar *)ip, IP_HDR_SIZE_NO_UDP / 2)) {
+-			puts ("checksum bad\n");
++			puts ("\x1b[32m checksum bad\n \x1b[0m");
+ 			return;
+ 		}
+ 		tmp = NetReadIP(&ip->ip_dst);
+@@ -1747,3 +1747,96 @@ IPaddr_t getenv_IPaddr (char *var)
+ 	return (string_to_ip(getenv(var)));
+ }
+ 
++
++
++//=======================================================================================================================================================================================
++//=======================================================================================================================================================================================
++//=======================================================================================================================================================================================
++#include "arch/cc.h"
++#include "lwip/ip_addr.h"
++#include "ethernetif.h" // ethernetif_init()
++#include "etharp.h" // ethernet_input()
++#include "stats.h" // LINK_STATS_INC()
++
++unsigned char webfailsafe_ready_for_upgrade = 0;
++unsigned char httpd_is_running = 1;
++
++struct netif lwip_netif = {0}; //定义一个全局的网络接口
++struct ip_addr ipaddr = {0}, netmask = {0}, gw = {0};
++IPaddr_t   tmp_ip_addr = 0;
++
++void lwip_init_task(IPaddr_t tmp_ip_addr)
++{
++	printf( "HTTP server is starting at IP: %ld.%ld.%ld.%ld\n",  (tmp_ip_addr >> 24) & 0xFF, (tmp_ip_addr >> 16) & 0xFF, (tmp_ip_addr >> 8) & 0xFF,  tmp_ip_addr & 0xFF);
++	struct netif *netif_init_flag = NULL;          //调用netif_add()函数时的返回值,用于判断网络初始化是否成功
++
++/*
++	[IP_addr]: 192.168.1.1;
++	[Submask]: 255.255.255.0;
++	[GateWay]: 192.168.1.8;
++*/
++	IP4_ADDR(&gw, 192, 168, 1, 8);
++	IP4_ADDR(&ipaddr, 192, 168, 1, 1);
++	// IP4_ADDR(&ipaddr, (tmp_ip_addr >> 24) & 0xFF, (tmp_ip_addr >> 16) & 0xFF, (tmp_ip_addr >> 8) & 0xFF,  tmp_ip_addr & 0xFF);
++	IP4_ADDR(&netmask, 255,  255, 255, 0);
++
++	// netif_init_flag = netif_add(&lwip_netif, &ipaddr, &netmask, &gw, NULL, __netif_init, ethernet_input);
++	netif_init_flag = netif_add(&lwip_netif, &ipaddr, &netmask, &gw, NULL, ethernetif_init, ethernet_input);
++	if(netif_init_flag == ERR_OK)
++	{
++	  	printf("====>[%s:%u]\n", __FUNCTION__, __LINE__);
++		netif_set_default(&lwip_netif);
++		netif_set_up(&lwip_netif);
++	}
++
++	printf("====>[%s:%u]\n", __FUNCTION__, __LINE__);
++}
++
++int rx_Handler(void)
++{
++	unsigned int i=0;
++
++	ethernetif_input(&lwip_netif); //从网络缓冲区中读取接收到的数据包并将其发送给LWIP处理
++//	sys_check_timeouts(); // sleep sometime
++
++	printf("====>[%s:%u]\n", __FUNCTION__, __LINE__);
++	return 0;
++}
++
++
++int NetLoopHttpd(void)
++{
++	// [Step_1]
++	lwip_init();
++
++	// [Step_2]
++	lwip_init_task(tmp_ip_addr); // start Lwip server
++
++	// [Step_3]
++	printf("Setup httpd starting\n");
++	httpd_is_running = 1;
++
++	// [Step_4]
++	netif_set_link_up(&lwip_netif);
++
++	// infinite loop
++	for ( ; ; )
++	{
++		rx_Handler();
++#if 0
++		/* Check for received frames, feed them to lwIP */
++		struct pbuf* p = /*eth_recv*/();
++		if(p != NULL)
++		{
++			LINK_STATS_INC(link.recv);
++
++			//if(lwip_netif.input(p, &lwip_netif) != ERR_OK)
++			{
++				pbuf_free(p);
++			}
++		}
++
++		sys_check_timeouts();
++#endif
++	}
++}

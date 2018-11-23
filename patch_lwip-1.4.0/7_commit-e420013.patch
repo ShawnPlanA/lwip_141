@@ -1,0 +1,23 @@
+From e420013e286484c4663eecda32b63e637f9574c0 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 09:38:42 +0800
+Subject: add cflag
+
+
+diff --git a/net/Makefile b/net/Makefile
+index e550e32..18e6f97 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -24,6 +24,12 @@
+ include $(TOPDIR)/config.mk
+ 
+ # CFLAGS += -DET_DEBUG -DDEBUG
++CFLAGS += \
++	-I../lwip-1.4.0/src/include/ \
++	-I../lwip-1.4.0/src/include/ipv4/ \
++	-I../lwip-1.4.0/src/include/lwip/ \
++	-I../lwip-1.4.0/src/include/netif/ 
++
+ 
+ LIB	= libnet.a
+ 

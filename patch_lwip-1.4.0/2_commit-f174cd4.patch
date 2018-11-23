@@ -1,0 +1,388 @@
+From f174cd411593b67c3759182b72e6a9f0d88c75e9 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 09:24:56 +0800
+Subject: fix var not init; bss
+
+
+diff --git a/lwip-1.4.0/src/api/sockets.c b/lwip-1.4.0/src/api/sockets.c
+index e36012c..cd610c5 100644
+--- a/lwip-1.4.0/src/api/sockets.c
++++ b/lwip-1.4.0/src/api/sockets.c
+@@ -123,12 +123,12 @@ struct lwip_setgetsockopt_data {
+ };
+ 
+ /** The global array of available sockets */
+-static struct lwip_sock sockets[NUM_SOCKETS];
++static struct lwip_sock sockets[NUM_SOCKETS] = {NULL};
+ /** The global list of tasks waiting for select */
+-static struct lwip_select_cb *select_cb_list;
++static struct lwip_select_cb *select_cb_list = NULL;
+ /** This counter is increased from lwip_select when the list is chagned
+     and checked in event_callback to see if it has changed. */
+-static volatile int select_cb_ctr;
++static volatile int select_cb_ctr = 0;
+ 
+ /** Table to quickly map an lwIP error (err_t) to a socket error
+   * by using -err as an index */
+diff --git a/lwip-1.4.0/src/api/tcpip.c b/lwip-1.4.0/src/api/tcpip.c
+index 857e7d9..5a1eb54 100644
+--- a/lwip-1.4.0/src/api/tcpip.c
++++ b/lwip-1.4.0/src/api/tcpip.c
+@@ -50,9 +50,9 @@
+ #include "netif/ppp_oe.h"
+ 
+ /* global variables */
+-static tcpip_init_done_fn tcpip_init_done;
+-static void *tcpip_init_done_arg;
+-static sys_mbox_t mbox;
++static tcpip_init_done_fn tcpip_init_done = NULL;
++static void *tcpip_init_done_arg = NULL;
++static sys_mbox_t mbox = 0;
+ 
+ #if LWIP_TCPIP_CORE_LOCKING
+ /** The global semaphore to lock the stack. */
+diff --git a/lwip-1.4.0/src/core/dhcp.c b/lwip-1.4.0/src/core/dhcp.c
+index 81b4be2..0b65db5 100644
+--- a/lwip-1.4.0/src/core/dhcp.c
++++ b/lwip-1.4.0/src/core/dhcp.c
+@@ -120,11 +120,11 @@
+ 
+ /** Holds the decoded option values, only valid while in dhcp_recv.
+     @todo: move this into struct dhcp? */
+-u32_t dhcp_rx_options_val[DHCP_OPTION_IDX_MAX];
++u32_t dhcp_rx_options_val[DHCP_OPTION_IDX_MAX] = {0};
+ /** Holds a flag which option was received and is contained in dhcp_rx_options_val,
+     only valid while in dhcp_recv.
+     @todo: move this into struct dhcp? */
+-u8_t  dhcp_rx_options_given[DHCP_OPTION_IDX_MAX];
++u8_t  dhcp_rx_options_given[DHCP_OPTION_IDX_MAX] = {0};
+ 
+ #define dhcp_option_given(dhcp, idx)          (dhcp_rx_options_given[idx] != 0)
+ #define dhcp_got_option(dhcp, idx)            (dhcp_rx_options_given[idx] = 1)
+diff --git a/lwip-1.4.0/src/core/dns.c b/lwip-1.4.0/src/core/dns.c
+index d633612..51a7a6d 100644
+--- a/lwip-1.4.0/src/core/dns.c
++++ b/lwip-1.4.0/src/core/dns.c
+@@ -185,7 +185,7 @@ struct dns_table_entry {
+ #if DNS_LOCAL_HOSTLIST_IS_DYNAMIC
+ /** Local host-list. For hostnames in this list, no
+  *  external name resolution is performed */
+-static struct local_hostlist_entry *local_hostlist_dynamic;
++static struct local_hostlist_entry *local_hostlist_dynamic = NULL;
+ #else /* DNS_LOCAL_HOSTLIST_IS_DYNAMIC */
+ 
+ /** Defining this allows the local_hostlist_static to be placed in a different
+diff --git a/lwip-1.4.0/src/core/ipv4/ip.c b/lwip-1.4.0/src/core/ipv4/ip.c
+index 6f24871..24d69ea 100644
+--- a/lwip-1.4.0/src/core/ipv4/ip.c
++++ b/lwip-1.4.0/src/core/ipv4/ip.c
+@@ -97,19 +97,19 @@
+  * The interface that provided the packet for the current callback
+  * invocation.
+  */
+-struct netif *current_netif;
++struct netif *current_netif = NULL;
+ 
+ /**
+  * Header of the input packet currently being processed.
+  */
+-const struct ip_hdr *current_header;
++const struct ip_hdr *current_header = NULL;
+ /** Source IP address of current_header */
+-ip_addr_t current_iphdr_src;
++ip_addr_t current_iphdr_src = {0};
+ /** Destination IP address of current_header */
+-ip_addr_t current_iphdr_dest;
++ip_addr_t current_iphdr_dest = {0};
+ 
+ /** The IP header ID of the next outgoing IP packet */
+-static u16_t ip_id;
++static u16_t ip_id = 0;
+ 
+ /**
+  * Finds the appropriate network interface for a given IP address. It
+diff --git a/lwip-1.4.0/src/core/ipv4/ip_frag.c b/lwip-1.4.0/src/core/ipv4/ip_frag.c
+index 8d18434..e65324e 100644
+--- a/lwip-1.4.0/src/core/ipv4/ip_frag.c
++++ b/lwip-1.4.0/src/core/ipv4/ip_frag.c
+@@ -105,8 +105,8 @@ PACK_STRUCT_END
+    IPH_ID(iphdrA) == IPH_ID(iphdrB)) ? 1 : 0
+ 
+ /* global variables */
+-static struct ip_reassdata *reassdatagrams;
+-static u16_t ip_reass_pbufcount;
++static struct ip_reassdata *reassdatagrams = NULL;
++static u16_t ip_reass_pbufcount = 0;
+ 
+ /* function prototypes */
+ static void ip_reass_dequeue_datagram(struct ip_reassdata *ipr, struct ip_reassdata *prev);
+diff --git a/lwip-1.4.0/src/core/mem.c b/lwip-1.4.0/src/core/mem.c
+index 9837555..1657100 100644
+--- a/lwip-1.4.0/src/core/mem.c
++++ b/lwip-1.4.0/src/core/mem.c
+@@ -183,18 +183,18 @@ u8_t ram_heap[MEM_SIZE_ALIGNED + (2*SIZEOF_STRUCT_MEM) + MEM_ALIGNMENT];
+ #endif /* LWIP_RAM_HEAP_POINTER */
+ 
+ /** pointer to the heap (ram_heap): for alignment, ram is now a pointer instead of an array */
+-static u8_t *ram;
++static u8_t *ram = NULL;
+ /** the last entry, always unused! */
+-static struct mem *ram_end;
++static struct mem *ram_end = NULL;
+ /** pointer to the lowest free block, this is used for faster search */
+-static struct mem *lfree;
++static struct mem *lfree = NULL;
+ 
+ /** concurrent access protection */
+-static sys_mutex_t mem_mutex;
++static sys_mutex_t mem_mutex = 0;
+ 
+ #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
+ 
+-static volatile u8_t mem_free_count;
++static volatile u8_t mem_free_count = 0;
+ 
+ /* Allow mem_free from other (e.g. interrupt) context */
+ #define LWIP_MEM_FREE_DECL_PROTECT()  SYS_ARCH_DECL_PROTECT(lev_free)
+diff --git a/lwip-1.4.0/src/core/netif.c b/lwip-1.4.0/src/core/netif.c
+index f190b1f..fa205d5 100644
+--- a/lwip-1.4.0/src/core/netif.c
++++ b/lwip-1.4.0/src/core/netif.c
+@@ -72,11 +72,11 @@
+ #define NETIF_LINK_CALLBACK(n)
+ #endif /* LWIP_NETIF_LINK_CALLBACK */ 
+ 
+-struct netif *netif_list;
+-struct netif *netif_default;
++struct netif *netif_list = NULL;
++struct netif *netif_default = NULL;
+ 
+ #if LWIP_HAVE_LOOPIF
+-static struct netif loop_netif;
++static struct netif loop_netif = {0};
+ 
+ /**
+  * Initialize a lwip network interface structure for a loopback interface
+diff --git a/lwip-1.4.0/src/core/pbuf.c b/lwip-1.4.0/src/core/pbuf.c
+index dd9ff64..681344b 100644
+--- a/lwip-1.4.0/src/core/pbuf.c
++++ b/lwip-1.4.0/src/core/pbuf.c
+@@ -95,7 +95,7 @@
+ #if PBUF_POOL_FREE_OOSEQ
+ #include "lwip/tcpip.h"
+ #define PBUF_POOL_IS_EMPTY() pbuf_pool_is_empty()
+-static u8_t pbuf_free_ooseq_queued;
++static u8_t pbuf_free_ooseq_queued = 0;
+ /**
+  * Attempt to reclaim some memory from queued out-of-sequence TCP segments
+  * if we run out of pool pbufs. It's better to give priority to new packets
+diff --git a/lwip-1.4.0/src/core/raw.c b/lwip-1.4.0/src/core/raw.c
+index 9fcb100..7ae64d0 100644
+--- a/lwip-1.4.0/src/core/raw.c
++++ b/lwip-1.4.0/src/core/raw.c
+@@ -53,7 +53,7 @@
+ #include <string.h>
+ 
+ /** The list of RAW PCBs */
+-static struct raw_pcb *raw_pcbs;
++static struct raw_pcb *raw_pcbs = NULL;
+ 
+ /**
+  * Determine if in incoming IP packet is covered by a RAW PCB
+diff --git a/lwip-1.4.0/src/core/stats.c b/lwip-1.4.0/src/core/stats.c
+index 69f97d4..9dc40f5 100644
+--- a/lwip-1.4.0/src/core/stats.c
++++ b/lwip-1.4.0/src/core/stats.c
+@@ -46,7 +46,7 @@
+ 
+ #include <string.h>
+ 
+-struct stats_ lwip_stats;
++struct stats_ lwip_stats = {0};
+ 
+ void stats_init(void)
+ {
+diff --git a/lwip-1.4.0/src/core/tcp.c b/lwip-1.4.0/src/core/tcp.c
+index c629bc4..6daee9f 100644
+--- a/lwip-1.4.0/src/core/tcp.c
++++ b/lwip-1.4.0/src/core/tcp.c
+@@ -70,7 +70,7 @@ const char * const tcp_state_str[] = {
+ };
+ 
+ /* Incremented every coarse grained timer shot (typically every 500 ms). */
+-u32_t tcp_ticks;
++u32_t tcp_ticks = 0;
+ const u8_t tcp_backoff[13] =
+     { 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7};
+  /* Times per slowtmr hits */
+@@ -79,14 +79,14 @@ const u8_t tcp_persist_backoff[7] = { 3, 6, 12, 24, 48, 96, 120 };
+ /* The TCP PCB lists. */
+ 
+ /** List of all TCP PCBs bound but not yet (connected || listening) */
+-struct tcp_pcb *tcp_bound_pcbs;
++struct tcp_pcb *tcp_bound_pcbs = NULL;
+ /** List of all TCP PCBs in LISTEN state */
+-union tcp_listen_pcbs_t tcp_listen_pcbs;
++union tcp_listen_pcbs_t tcp_listen_pcbs = {.pcbs = NULL, .listen_pcbs = NULL};
+ /** List of all TCP PCBs that are in a state in which
+  * they accept or send data. */
+-struct tcp_pcb *tcp_active_pcbs;
++struct tcp_pcb *tcp_active_pcbs = NULL;
+ /** List of all TCP PCBs in TIME-WAIT state */
+-struct tcp_pcb *tcp_tw_pcbs;
++struct tcp_pcb *tcp_tw_pcbs = NULL;
+ 
+ #define NUM_TCP_PCB_LISTS               4
+ #define NUM_TCP_PCB_LISTS_NO_TIME_WAIT  3
+@@ -95,10 +95,10 @@ struct tcp_pcb ** const tcp_pcb_lists[] = {&tcp_listen_pcbs.pcbs, &tcp_bound_pcb
+   &tcp_active_pcbs, &tcp_tw_pcbs};
+ 
+ /** Only used for temporary storage. */
+-struct tcp_pcb *tcp_tmp_pcb;
++struct tcp_pcb *tcp_tmp_pcb = NULL;
+ 
+ /** Timer counter to handle calling slow-timer from tcp_tmr() */ 
+-static u8_t tcp_timer;
++static u8_t tcp_timer = 0;
+ static u16_t tcp_new_port(void);
+ 
+ /**
+diff --git a/lwip-1.4.0/src/core/tcp_in.c b/lwip-1.4.0/src/core/tcp_in.c
+index 9095264..225c146 100644
+--- a/lwip-1.4.0/src/core/tcp_in.c
++++ b/lwip-1.4.0/src/core/tcp_in.c
+@@ -59,17 +59,17 @@
+ /* These variables are global to all functions involved in the input
+    processing of TCP segments. They are set by the tcp_input()
+    function. */
+-static struct tcp_seg inseg;
+-static struct tcp_hdr *tcphdr;
+-static struct ip_hdr *iphdr;
+-static u32_t seqno, ackno;
+-static u8_t flags;
+-static u16_t tcplen;
++static struct tcp_seg inseg = {NULL};
++static struct tcp_hdr *tcphdr = NULL;
++static struct ip_hdr *iphdr = NULL;
++static u32_t seqno = 0, ackno = 0;
++static u8_t flags = 0;
++static u16_t tcplen = 0;
+ 
+-static u8_t recv_flags;
+-static struct pbuf *recv_data;
++static u8_t recv_flags = 0;
++static struct pbuf *recv_data = NULL;
+ 
+-struct tcp_pcb *tcp_input_pcb;
++struct tcp_pcb *tcp_input_pcb = NULL;
+ 
+ /* Forward declarations. */
+ static err_t tcp_process(struct tcp_pcb *pcb);
+diff --git a/lwip-1.4.0/src/core/timers.c b/lwip-1.4.0/src/core/timers.c
+index f0e92cc..1ba10c9 100644
+--- a/lwip-1.4.0/src/core/timers.c
++++ b/lwip-1.4.0/src/core/timers.c
+@@ -59,14 +59,14 @@
+ 
+ 
+ /** The one and only timeout list */
+-static struct sys_timeo *next_timeout;
++static struct sys_timeo *next_timeout = NULL;
+ #if NO_SYS
+-static u32_t timeouts_last_time;
++static u32_t timeouts_last_time = 0;
+ #endif /* NO_SYS */
+ 
+ #if LWIP_TCP
+ /** global variable that shows if the tcp timer is currently scheduled or not */
+-static int tcpip_tcp_timer_active;
++static int tcpip_tcp_timer_active = 0;
+ 
+ /**
+  * Timer callback function that calls tcp_tmr() and reschedules itself.
+diff --git a/lwip-1.4.0/src/core/udp.c b/lwip-1.4.0/src/core/udp.c
+index 4596ba2..f00abcb 100644
+--- a/lwip-1.4.0/src/core/udp.c
++++ b/lwip-1.4.0/src/core/udp.c
+@@ -66,7 +66,7 @@
+ 
+ /* The list of UDP PCBs */
+ /* exported in udp.h (was static) */
+-struct udp_pcb *udp_pcbs;
++struct udp_pcb *udp_pcbs = NULL;
+ 
+ /**
+  * Process an incoming UDP datagram.
+diff --git a/lwip-1.4.0/src/netif/etharp.c b/lwip-1.4.0/src/netif/etharp.c
+index b60dadd..ba05200 100644
+--- a/lwip-1.4.0/src/netif/etharp.c
++++ b/lwip-1.4.0/src/netif/etharp.c
+@@ -109,10 +109,10 @@ struct etharp_entry {
+ #endif /* ETHARP_SUPPORT_STATIC_ENTRIES */
+ };
+ 
+-static struct etharp_entry arp_table[ARP_TABLE_SIZE];
++static struct etharp_entry arp_table[ARP_TABLE_SIZE] = {NULL};
+ 
+ #if !LWIP_NETIF_HWADDRHINT
+-static u8_t etharp_cached_entry;
++static u8_t etharp_cached_entry = 0;
+ #endif /* !LWIP_NETIF_HWADDRHINT */
+ 
+ /** Try hard to create a new entry - we want the IP address to appear in
+diff --git a/lwip-1.4.0/src/netif/ppp/ppp.c b/lwip-1.4.0/src/netif/ppp/ppp.c
+index e9b433b..5a57eee 100644
+--- a/lwip-1.4.0/src/netif/ppp/ppp.c
++++ b/lwip-1.4.0/src/netif/ppp/ppp.c
+@@ -247,9 +247,9 @@ static void pppInProc(PPPControlRx *pcrx, u_char *s, int l);
+ /******************************/
+ /*** PUBLIC DATA STRUCTURES ***/
+ /******************************/
+-u_long subnetMask;
++u_long subnetMask = 0;
+ 
+-static PPPControl pppControl[NUM_PPP]; /* The PPP interface control blocks. */
++static PPPControl pppControl[NUM_PPP] = {0}; /* The PPP interface control blocks. */
+ 
+ /*
+  * PPP Data Link Layer "protocol" table.
+@@ -279,7 +279,7 @@ struct protent *ppp_protocols[] = {
+  * Buffers for outgoing packets.  This must be accessed only from the appropriate
+  * PPP task so that it doesn't need to be protected to avoid collisions.
+  */
+-u_char outpacket_buf[NUM_PPP][PPP_MRU+PPP_HDRLEN];
++u_char outpacket_buf[NUM_PPP][PPP_MRU+PPP_HDRLEN] = {0};
+ 
+ 
+ /*****************************/
+@@ -426,7 +426,7 @@ pppHup(int pd)
+ /***********************************/
+ /* Initialize the PPP subsystem. */
+ 
+-struct ppp_settings ppp_settings;
++struct ppp_settings ppp_settings = {0};
+ 
+ void
+ pppInit(void)
+diff --git a/lwip-1.4.0/src/netif/ppp/ppp_oe.c b/lwip-1.4.0/src/netif/ppp/ppp_oe.c
+index 040a0bc..9d00428 100644
+--- a/lwip-1.4.0/src/netif/ppp/ppp_oe.c
++++ b/lwip-1.4.0/src/netif/ppp/ppp_oe.c
+@@ -110,7 +110,7 @@
+ #ifndef PPPOE_ERRORSTRING_LEN
+ #define PPPOE_ERRORSTRING_LEN     64
+ #endif
+-static char pppoe_error_tmp[PPPOE_ERRORSTRING_LEN];
++static char pppoe_error_tmp[PPPOE_ERRORSTRING_LEN] = {0};
+ 
+ 
+ /* input routines */
+@@ -138,7 +138,7 @@ static struct pppoe_softc * pppoe_find_softc_by_session(u_int, struct netif *);
+ static struct pppoe_softc * pppoe_find_softc_by_hunique(u8_t *, size_t, struct netif *);
+ 
+ /** linked list of created pppoe interfaces */
+-static struct pppoe_softc *pppoe_softc_list;
++static struct pppoe_softc *pppoe_softc_list = NULL;
+ 
+ err_t
+ pppoe_create(struct netif *ethif, int pd, void (*linkStatusCB)(int pd, int up), struct pppoe_softc **scptr)

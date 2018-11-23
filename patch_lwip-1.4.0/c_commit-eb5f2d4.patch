@@ -1,0 +1,135 @@
+From eb5f2d4c8f7d3255dee51a412c4391259b7130b4 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 17:08:06 +0800
+Subject: add arp error info
+
+
+diff --git a/lwip-1.4.0/xxxx_arp.txt b/lwip-1.4.0/xxxx_arp.txt
+new file mode 100644
+index 0000000..a7d6ebd
+--- /dev/null
++++ b/lwip-1.4.0/xxxx_arp.txt
+@@ -0,0 +1,123 @@
++
++
++====>[rx_Handler:1820]
++pbuf_alloc(length=60)
++pbuf_alloc: allocated pbuf 83fcb10c
++pbuf_alloc(length=60) == 83fcb10c
++ethernet_input: dest:ff:ff:ff:ff:ff:ff, src:48:4d:7e:bc:4d:81, type:806
++netif: SIP address 192.168.1.100
++netif: DIP address 192.168.1.8
++[etharp_arp_input:744]
++netif: IP address 192.168.1.1
++netif: DIP address 192.168.1.8
++====>   for_us = 0
++update_arp_entry: 192.168.1.100 - 48:4d:7e:bc:4d:81
++find_entry: found empty entry 0
++find_entry: no empty entry found and not allowed to recycle
++etharp_arp_input: incoming ARP request
++etharp_arp_input: ARP request was not for us.
++pbuf_free(83fcb10c)
++pbuf_free: deallocating 83fcb10c
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++====>[rx_Handler:1820]
++pbuf_alloc(length=60)
++pbuf_alloc: allocated pbuf 83fcb10c
++pbuf_alloc(length=60) == 83fcb10c
++ethernet_input: dest:ff:ff:ff:ff:ff:ff, src:48:4d:7e:bc:4d:81, type:806
++netif: SIP address 0.0.0.0
++netif: DIP address 192.168.1.100
++[etharp_arp_input:744]
++netif: IP address 192.168.1.1
++netif: DIP address 192.168.1.100
++====>   for_us = 0
++update_arp_entry: 0.0.0.0 - 48:4d:7e:bc:4d:81
++update_arp_entry: will not add non-unicast IP address to ARP cache
++etharp_arp_input: incoming ARP request
++etharp_arp_input: ARP request was not for us.
++pbuf_free(83fcb10c)
++pbuf_free: deallocating 83fcb10c
++etharp_timer
++etharp_timer
++
++
++====>[rx_Handler:1820]
++pbuf_alloc(length=60)
++pbuf_alloc: allocated pbuf 83fcb10c
++pbuf_alloc(length=60) == 83fcb10c
++ethernet_input: dest:ff:ff:ff:ff:ff:ff, src:48:4d:7e:bc:4d:81, type:806
++netif: SIP address 192.168.1.100
++netif: DIP address 192.168.1.1
++[etharp_arp_input:744]
++netif: IP address 192.168.1.1
++netif: DIP address 192.168.1.1
++====>   for_us = 1
++update_arp_entry: 192.168.1.100 - 48:4d:7e:bc:4d:81
++find_entry: found empty entry 0
++find_entry: selecting empty entry 0
++update_arp_entry: updating stable entry 0
++etharp_arp_input: incoming ARP request
++etharp_arp_input: replying to ARP request for our IP address
++pbuf_free(83fcb10c)
++pbuf_free: deallocating 83fcb10c
++etharp_timer
++
++
++
++====>[rx_Handler:1820]
++pbuf_alloc(length=60)
++pbuf_alloc: allocated pbuf 83fcb10c
++pbuf_alloc(length=60) == 83fcb10c
++ethernet_input: dest:ff:ff:ff:ff:ff:ff, src:48:4d:7e:bc:4d:81, type:806
++netif: SIP address 192.168.1.100
++netif: DIP address 192.168.1.8
++[etharp_arp_input:744]
++netif: IP address 192.168.1.1
++netif: DIP address 192.168.1.8
++====>   for_us = 0
++update_arp_entry: 192.168.1.100 - 48:4d:7e:bc:4d:81
++find_entry: found matching entry 0
++update_arp_entry: updating stable entry 0
++etharp_arp_input: incoming ARP request
++etharp_arp_input: ARP request was not for us.
++pbuf_free(83fcb10c)
++pbuf_free: deallocating 83fcb10c
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++
++
++
++
++
++====>[rx_Handler:1820]
++pbuf_alloc(length=60)
++pbuf_alloc: allocated pbuf 83fcb10c
++pbuf_alloc(length=60) == 83fcb10c
++ethernet_input: dest:ff:ff:ff:ff:ff:ff, src:48:4d:7e:bc:4d:81, type:806
++netif: SIP address 0.0.0.0
++netif: DIP address 192.168.1.100
++[etharp_arp_input:744]
++netif: IP address 192.168.1.1
++netif: DIP address 192.168.1.100
++====>   for_us = 0
++update_arp_entry: 0.0.0.0 - 48:4d:7e:bc:4d:81
++update_arp_entry: will not add non-unicast IP address to ARP cache
++etharp_arp_input: incoming ARP request
++etharp_arp_input: ARP request was not for us.
++pbuf_free(83fcb10c)
++pbuf_free: deallocating 83fcb10c
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++etharp_timer
++
++

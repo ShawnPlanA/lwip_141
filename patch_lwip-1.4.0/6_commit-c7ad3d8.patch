@@ -1,0 +1,420 @@
+From c7ad3d8a2bebb998ffdd00b0cd38c0153e7be0b7 Mon Sep 17 00:00:00 2001
+From: "Shawn.Luo" <strugglelg@gmail.com>
+Date: Thu, 22 Nov 2018 09:38:22 +0800
+Subject: =?UTF-8?q?[Lwip]=20=E6=B7=BB=E5=8A=A0=E9=9C=80=E8=A6=81=E7=9A=84?=
+ =?UTF-8?q?=E5=A4=B4=E6=96=87=E4=BB=B6,=20=E5=87=BD=E6=95=B0=E5=90=8D?=
+ =?UTF-8?q?=E7=A7=B0?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+
+diff --git a/lwip-1.4.0/src/arch/perf.c b/lwip-1.4.0/src/arch/perf.c
+new file mode 100644
+index 0000000..af64adc
+--- /dev/null
++++ b/lwip-1.4.0/src/arch/perf.c
+@@ -0,0 +1,20 @@
++#include "arch/perf.h"
++
++void perf_init(char *fname)
++{
++	return;
++}
++
++
++void perf_print(unsigned long c1l, unsigned long c1h,
++		unsigned long c2l, unsigned long c2h,
++		char *key)
++{
++	return;
++}
++
++
++void perf_print_times(struct tms *start, struct tms *end, char *key)
++{
++	return;
++}
+diff --git a/lwip-1.4.0/src/arch/sys_arch.c b/lwip-1.4.0/src/arch/sys_arch.c
+new file mode 100755
+index 0000000..ad6eca7
+--- /dev/null
++++ b/lwip-1.4.0/src/arch/sys_arch.c
+@@ -0,0 +1,37 @@
++
++
++#include "lwip/debug.h"
++#include "lwip/sys.h"
++#include "lwip/opt.h"
++#include "lwip/stats.h"
++
++#include <stdlib.h>
++#include <string.h>
++
++static int num_sem = 0;                 // Number of semaphores created
++static int num_mbox = 0;                // Number of mailboxes created
++static int num_thread = 0;              // Number of threads created
++static int num_hisr = 0;                // Number of hisrs created
++//static struct sys_thread *threads = NULL;
++//static struct sys_hisr *hisrs = NULL;
++
++#define TICKS_PER_SECOND 10000
++#define MS_TO_TICKS(MS) (MS * (TICKS_PER_SECOND / 1000))
++#define TICKS_TO_MS(TICKS) ((unsigned long)((1000ULL * TICKS) / TICKS_PER_SECOND))
++#define TICKS_TO_HUNDMICROSEC(TICKS) TICKS
++
++#define SYS_MBOX_SIZE 128               // Number of elements in mbox queue
++#define SYS_STACK_SIZE 2048             // A minimum Nucleus stack for coldfire
++#define SYS_HISR_STACK_SIZE 2048             // A minimum Nucleus stack for coldfire
++
++/*---------------------------------------------------------------------------------*/
++void sys_init(void)
++{
++	return;
++}
++
++//  lib_mips/time.c
++u32_t sys_now(void)
++{
++	return get_timer(0) / 1000;
++}
+diff --git a/lwip-1.4.0/src/include/lwip/arch/cc.h b/lwip-1.4.0/src/include/lwip/arch/cc.h
+new file mode 100755
+index 0000000..5f2877a
+--- /dev/null
++++ b/lwip-1.4.0/src/include/lwip/arch/cc.h
+@@ -0,0 +1,90 @@
++#ifndef __CC_H__
++#define __CC_H__
++
++#include "../arch.h"
++
++#if 0
++#ifndef LITTLE_ENDIAN
++#define LITTLE_ENDIAN  3412
++#endif /* LITTLE_ENDIAN */
++
++#ifndef BIG_ENDIAN
++#define BIG_ENDIAN     1234
++#endif /* BIGE_ENDIAN */
++#endif
++
++#ifndef BYTE_ORDER
++#define BYTE_ORDER     LITTLE_ENDIAN
++#endif /* BYTE_ORDER */
++
++
++typedef unsigned   char    u8_t;    /* Unsigned 8 bit quantity         */
++typedef signed     char    s8_t;    /* Signed    8 bit quantity        */
++typedef unsigned   short   u16_t;   /* Unsigned 16 bit quantity        */
++typedef signed     short   s16_t;   /* Signed   16 bit quantity        */
++typedef unsigned   int    u32_t;   /* Unsigned 32 bit quantity        */
++typedef signed     int    s32_t;   /* Signed   32 bit quantity        */
++typedef u32_t mem_ptr_t;            /* Unsigned 32 bit quantity        */
++typedef int sys_prot_t;
++
++
++
++
++/*----------------------------------------------------------------------------*/
++/* define compiler specific symbols */
++#if defined (__ICCARM__)
++
++#define PACK_STRUCT_BEGIN
++#define PACK_STRUCT_STRUCT 
++#define PACK_STRUCT_END
++#define PACK_STRUCT_FIELD(x) x
++#define PACK_STRUCT_USE_INCLUDES
++
++#elif defined (__CC_ARM)
++#define PACK_STRUCT_BEGIN __packed
++#define PACK_STRUCT_STRUCT 
++#define PACK_STRUCT_END
++#define PACK_STRUCT_FIELD(x) x
++
++#elif defined (__GNUC__)
++#define PACK_STRUCT_BEGIN
++#define PACK_STRUCT_STRUCT __attribute__ ((__packed__))
++#define PACK_STRUCT_END
++#define PACK_STRUCT_FIELD(x) x
++
++#elif defined (__TASKING__)
++#define PACK_STRUCT_BEGIN
++#define PACK_STRUCT_STRUCT
++#define PACK_STRUCT_END
++#define PACK_STRUCT_FIELD(x) x
++#endif
++
++
++/*---define (sn)printf formatters for these lwip types, for lwip DEBUG/STATS--*/
++#define U16_F	"d"
++#define S16_F	"d"
++#define X16_F	"x"
++#define U32_F	"ld"
++#define S32_F	"ld"
++#define X32_F	"lx"
++
++
++
++
++#ifndef LWIP_PLATFORM_ASSERT
++#define LWIP_PLATFORM_ASSERT(x) \
++	do { \
++		printf("Assertion \"%s\" failed at line %d in %s\r\n", x, __LINE__, __FILE__); \
++	} while(0)
++#endif
++
++#ifndef LWIP_PLATFORM_DIAG
++#define LWIP_PLATFORM_DIAG(x) do {printf x;} while(0)
++/*
++#define LWIP_PLATFORM_DIAG(fmt, ...) \
++do { \
++	printf(fmt, ##  __VA_ARGS__); \
++} while (0)
++*/
++#endif
++#endif /* __CC_H__ */
+diff --git a/lwip-1.4.0/src/include/lwip/arch/perf.h b/lwip-1.4.0/src/include/lwip/arch/perf.h
+new file mode 100644
+index 0000000..71cc55b
+--- /dev/null
++++ b/lwip-1.4.0/src/include/lwip/arch/perf.h
+@@ -0,0 +1,36 @@
++#ifndef __ARCH_PERF_H__
++#define __ARCH_PERF_H__
++
++#include <sys/times.h>
++
++#ifdef PERF
++#define PERF_START  { \
++                         unsigned long __c1l, __c1h, __c2l, __c2h; \
++                         __asm__(".byte 0x0f, 0x31" : "=a" (__c1l), "=d" (__c1h))
++#define PERF_STOP(x)   __asm__(".byte 0x0f, 0x31" : "=a" (__c2l), "=d" (__c2h)); \
++                       perf_print(__c1l, __c1h, __c2l, __c2h, x);}
++
++/*
++#define PERF_START \
++do { \
++       struct tms __perf_start, __perf_end; \
++                     times(&__perf_start)
++
++#define PERF_STOP(x) times(&__perf_end); \
++                     perf_print_times(&__perf_start, &__perf_end, x);\
++                     } while(0)
++*/
++#else /* PERF */
++
++#define PERF_START    /* null definition */
++#define PERF_STOP(x)  /* null definition */
++#endif /* PERF */
++
++void perf_print(unsigned long c1l, unsigned long c1h,
++		unsigned long c2l, unsigned long c2h,
++		char *key);
++
++void perf_print_times(struct tms *start, struct tms *end, char *key);
++void perf_init(char *fname);
++
++#endif /* __ARCH_PERF_H__ */
+diff --git a/lwip-1.4.0/src/include/lwip/arch/sys_arch.h b/lwip-1.4.0/src/include/lwip/arch/sys_arch.h
+new file mode 100644
+index 0000000..4e69b25
+--- /dev/null
++++ b/lwip-1.4.0/src/include/lwip/arch/sys_arch.h
+@@ -0,0 +1,31 @@
++#ifndef LWIP_ARCH_SYS_ARCH_H
++#define LWIP_ARCH_SYS_ARCH_H
++
++#define SYS_MBOX_NULL NULL
++#define SYS_SEM_NULL  NULL
++
++/*typedef u32_t sys_prot_t;*/
++
++struct sys_sem;
++typedef struct sys_sem * sys_sem_t;
++#define sys_sem_valid(sem)             (((sem) != NULL) && (*(sem) != NULL))
++#define sys_sem_valid_val(sem)         ((sem) != NULL)
++#define sys_sem_set_invalid(sem)       do { if((sem) != NULL) { *(sem) = NULL; }}while(0)
++#define sys_sem_set_invalid_val(sem)   do { (sem) = NULL; }while(0)
++
++struct sys_mutex;
++typedef struct sys_mutex * sys_mutex_t;
++#define sys_mutex_valid(mutex)         sys_sem_valid(mutex)
++#define sys_mutex_set_invalid(mutex)   sys_sem_set_invalid(mutex)
++
++struct sys_mbox;
++typedef struct sys_mbox * sys_mbox_t;
++#define sys_mbox_valid(mbox)           sys_sem_valid(mbox)
++#define sys_mbox_valid_val(mbox)       sys_sem_valid_val(mbox)
++#define sys_mbox_set_invalid(mbox)     sys_sem_set_invalid(mbox)
++#define sys_mbox_set_invalid_val(mbox) sys_sem_set_invalid_val(mbox)
++
++struct sys_thread;
++typedef struct sys_thread * sys_thread_t;
++
++#endif /* LWIP_ARCH_SYS_ARCH_H */
+diff --git a/lwip-1.4.0/src/include/lwip/lwipopts.h b/lwip-1.4.0/src/include/lwip/lwipopts.h
+new file mode 100755
+index 0000000..6ca058c
+--- /dev/null
++++ b/lwip-1.4.0/src/include/lwip/lwipopts.h
+@@ -0,0 +1,140 @@
++#ifndef __LWIPOPTS_H__
++#define __LWIPOPTS_H__
++
++#define SYS_LIGHTWEIGHT_PROT    0
++
++//NO_SYS==1:不使用操作系统
++#define NO_SYS                  1  //不使用UCOS操作系统
++
++//使用4字节对齐模式
++#define MEM_ALIGNMENT           4  
++
++//MEM_SIZE:heap内存的大小,如果在应用中有大量数据发送的话这个值最好设置大一点 
++#define MEM_SIZE                16000 //内存堆大小
++
++//MEMP_NUM_PBUF:memp结构的pbuf数量,如果应用从ROM或者静态存储区发送大量数据时,这个值应该设置大一点
++#define MEMP_NUM_PBUF           10
++
++//MEMP_NUM_UDP_PCB:UDP协议控制块(PCB)数量.每个活动的UDP"连接"需要一个PCB.
++#define MEMP_NUM_UDP_PCB        6
++
++//MEMP_NUM_TCP_PCB:同时建立激活的TCP数量
++#define MEMP_NUM_TCP_PCB        10
++
++//MEMP_NUM_TCP_PCB_LISTEN:能够监听的TCP连接数量
++#define MEMP_NUM_TCP_PCB_LISTEN 6
++
++//MEMP_NUM_TCP_SEG:最多同时在队列中的TCP段数量
++#define MEMP_NUM_TCP_SEG        15
++
++//MEMP_NUM_SYS_TIMEOUT:能够同时激活的timeout个数
++#define MEMP_NUM_SYS_TIMEOUT    8
++
++
++/* ---------- Pbuf选项---------- */
++//PBUF_POOL_SIZE:pbuf内存池个数. 
++#define PBUF_POOL_SIZE          20
++
++//PBUF_POOL_BUFSIZE:每个pbuf内存池大小. 
++#define PBUF_POOL_BUFSIZE       512
++
++
++/* ---------- TCP选项---------- */
++#define LWIP_TCP                1  //为1是使用TCP
++#define TCP_TTL                 255//生存时间
++
++/*当TCP的数据段超出队列时的控制位,当设备的内存过小的时候此项应为0*/
++#define TCP_QUEUE_OOSEQ         0
++
++//最大TCP分段
++#define TCP_MSS                 (1500 - 40)	  //TCP_MSS = (MTU - IP报头大小 - TCP报头大小
++
++//TCP发送缓冲区大小(bytes).
++#define TCP_SND_BUF             (4*TCP_MSS)
++
++//TCP_SND_QUEUELEN: TCP发送缓冲区大小(pbuf).这个值最小为(2 * TCP_SND_BUF/TCP_MSS) 
++#define TCP_SND_QUEUELEN        (2* TCP_SND_BUF/TCP_MSS)
++
++//TCP发送窗口
++#define TCP_WND                 (2*TCP_MSS)
++
++
++/* ---------- ICMP选项---------- */
++#define LWIP_ICMP                 1 //使用ICMP协议
++
++/* ---------- DHCP选项---------- */
++//当使用DHCP时此位应该为1,LwIP 0.5.1版本中没有DHCP服务.
++#define LWIP_DHCP               0
++
++/* ---------- UDP选项 ---------- */ 
++#define LWIP_UDP                1 //使用UDP服务
++#define UDP_TTL                 255 //UDP数据包生存时间
++
++
++/* ---------- Statistics options ---------- */
++#define LWIP_STATS 0
++#define LWIP_PROVIDE_ERRNO 1
++
++
++//STM32F4x7允许通过硬件识别和计算IP,UDP和ICMP的帧校验和
++#define CHECKSUM_BY_HARDWARE //定义CHECKSUM_BY_HARDWARE,使用硬件帧校验
++
++
++#ifdef CHECKSUM_BY_HARDWARE
++  //CHECKSUM_GEN_IP==0: 硬件生成IP数据包的帧校验和
++  #define CHECKSUM_GEN_IP                 0
++  //CHECKSUM_GEN_UDP==0: 硬件生成UDP数据包的帧校验和
++  #define CHECKSUM_GEN_UDP                0
++  //CHECKSUM_GEN_TCP==0: 硬件生成TCP数据包的帧校验和
++  #define CHECKSUM_GEN_TCP                0 
++  //CHECKSUM_CHECK_IP==0: 硬件检查输入的IP数据包帧校验和
++  #define CHECKSUM_CHECK_IP               0
++  //CHECKSUM_CHECK_UDP==0: 硬件检查输入的UDP数据包帧校验和
++  #define CHECKSUM_CHECK_UDP              0
++  //CHECKSUM_CHECK_TCP==0: 硬件检查输入的TCP数据包帧校验和
++  #define CHECKSUM_CHECK_TCP              0
++#else
++  //CHECKSUM_GEN_IP==1: 软件生成IP数据包帧校验和
++  #define CHECKSUM_GEN_IP                 1
++  // CHECKSUM_GEN_UDP==1: 软件生成UDOP数据包帧校验和
++  #define CHECKSUM_GEN_UDP                1
++  //CHECKSUM_GEN_TCP==1: 软件生成TCP数据包帧校验和
++  #define CHECKSUM_GEN_TCP                1
++  // CHECKSUM_CHECK_IP==1: 软件检查输入的IP数据包帧校验和
++  #define CHECKSUM_CHECK_IP               1
++  // CHECKSUM_CHECK_UDP==1: 软件检查输入的UDP数据包帧校验和
++  #define CHECKSUM_CHECK_UDP              1
++  //CHECKSUM_CHECK_TCP==1: 软件检查输入的TCP数据包帧校验和
++  #define CHECKSUM_CHECK_TCP              1
++#endif
++
++
++/*
++   ----------------------------------------------
++   ---------- SequentialAPI选项----------
++   ----------------------------------------------
++*/
++
++//LWIP_NETCONN==1:使能NETCON函数(要求使用api_lib.c)
++#define LWIP_NETCONN                    0
++
++/*
++   ------------------------------------
++   ---------- Socket API选项----------
++   ------------------------------------
++*/
++//LWIP_SOCKET==1:使能Socket API(要求使用sockets.c)
++#define LWIP_SOCKET                     0
++#define LWIP_COMPAT_MUTEX               1
++#define LWIP_SO_RCVTIMEO                1 //通过定义LWIP_SO_RCVTIMEO使能netconn结构体中recv_timeout,使用recv_timeout可以避免阻塞线程
++
++
++/*
++   ----------------------------------------
++   ---------- Lwip调试选项----------
++   ----------------------------------------
++*/
++#define LWIP_DEBUG                     1 //开启DEBUG选项
++#define ICMP_DEBUG                      LWIP_DBG_OFF //开启/关闭ICMPdebug
++
++#endif /* __LWIPOPTS_H__ */
+diff --git a/lwip-1.4.0/src/include/netif/ethernetif.h b/lwip-1.4.0/src/include/netif/ethernetif.h
+new file mode 100644
+index 0000000..bb67149
+--- /dev/null
++++ b/lwip-1.4.0/src/include/netif/ethernetif.h
+@@ -0,0 +1,13 @@
++#ifndef __ETHERNETIF_H__
++#define __ETHERNETIF_H__
++#include "lwip/err.h"
++#include "lwip/netif.h"
++
++//网卡的名字
++#define IFNAME0 'e'
++#define IFNAME1 'n'
++ 
++
++err_t ethernetif_init(struct netif *netif);
++//err_t ethernetif_input(struct netif *netif);
++#endif
