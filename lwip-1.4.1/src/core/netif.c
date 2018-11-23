@@ -135,12 +135,18 @@ netif_init(void)
  *
  * @return netif, or NULL if failed.
  */
+ #include "netif/ethernetif.h"
+
 struct netif *
 netif_add(struct netif *netif, ip_addr_t *ipaddr, ip_addr_t *netmask,
   ip_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input)
 {
 
   LWIP_ASSERT("No init function given", init != NULL);
+
+  /* init name;	Copy from  lwip-1.4.0/src/netif/ethernetif.c */
+  netif->name[0] = IFNAME0;
+  netif->name[1] = IFNAME1;
 
   /* reset new interface configuration state */
   ip_addr_set_zero(&netif->ip_addr);
@@ -221,8 +227,13 @@ void
 netif_set_addr(struct netif *netif, ip_addr_t *ipaddr, ip_addr_t *netmask,
     ip_addr_t *gw)
 {
+  printf("\x1b[32m##<<======= netif_set_ipaddr() =======>>##\x1b[0m\n");
   netif_set_ipaddr(netif, ipaddr);
+
+  printf("\x1b[32m##<<======= netif_set_netmask() =======>>##\x1b[0m\n");
   netif_set_netmask(netif, netmask);
+
+  printf("\x1b[32m##<<======= netif_set_gw() =======>>##\x1b[0m\n");
   netif_set_gw(netif, gw);
 }
 
