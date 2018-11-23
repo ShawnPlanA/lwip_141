@@ -81,7 +81,7 @@ CFLAGS += \
 		-I./include/ipv4/ \
 		-I./include/lwip/ \
 		-I./include/netif/ \
-		-I$(CONFIG_CROSS_COMPILER_PATH)/../include/
+		-I$(CONFIG_CROSS_COMPILER_PATH)/../include/ 
 #	-I../include \
 #	-I../include/linux \
 #####################################################

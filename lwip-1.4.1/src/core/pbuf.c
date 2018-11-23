@@ -575,7 +575,7 @@ pbuf_header(struct pbuf *p, s16_t header_size_increment)
   p->len += header_size_increment;
   p->tot_len += header_size_increment;
 
-  LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_header: old %p new %p (%"S16_F")\n",
+  LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("  [pbuf_header]: old %p new %p (%"S16_F")\n",
     (void *)payload, (void *)p->payload, header_size_increment));
 
   return 0;
@@ -655,7 +655,7 @@ pbuf_free(struct pbuf *p)
     if (ref == 0) {
       /* remember next pbuf in chain for next iteration */
       q = p->next;
-      LWIP_DEBUGF( PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_free: deallocating %p\n", (void *)p));
+      LWIP_DEBUGF( PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_free: deallocating %p\n\n", (void *)p));
       type = p->type;
 #if LWIP_SUPPORT_CUSTOM_PBUF
       /* is this a custom pbuf? */

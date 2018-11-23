@@ -131,7 +131,7 @@ PACK_STRUCT_END
 #define SIZEOF_ETHARP_HDR 28
 #define SIZEOF_ETHARP_PACKET (SIZEOF_ETH_HDR + SIZEOF_ETHARP_HDR)
 
-/** 5 seconds period */
+/** 5 seconds period 5秒 */
 #define ARP_TMR_INTERVAL 5000
 
 #define ETHTYPE_ARP       0x0806U

@@ -2811,6 +2811,7 @@ static int rt2880_eth_recv(struct eth_device* dev)
 		}
 		else {
 			NetReceive((void *)KSEG1ADDR(NetRxPackets[rx_dma_owner_idx0]), length );
+			printf("[%s:%u]\n", __FUNCTION__, __LINE__);
 		}
 
 #if  defined (RX_SCATTER_GATTER_DMA)
@@ -2849,6 +2850,7 @@ static int rt2880_eth_recv(struct eth_device* dev)
 		//printf("\n RX_DRX_IDX0 = %d \n",RALINK_REG(RX_DRX_IDX0));
 		//printf("\n ************************************************* \n");
 	}
+	printf("[%s:%u]\n", __FUNCTION__, __LINE__);
 	return length;
 }
 

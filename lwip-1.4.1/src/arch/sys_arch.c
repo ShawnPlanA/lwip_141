@@ -34,4 +34,5 @@ void sys_init(void)
 u32_t sys_now(void)
 {
 	return get_timer(0) / 1000;
+//	return get_timer(0);
 }

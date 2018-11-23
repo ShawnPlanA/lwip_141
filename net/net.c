@@ -1272,7 +1272,7 @@ NetReceive(volatile uchar * inpkt, int len)
 		}
 
 		if (NetOurIP == 0) {
-			printf("\n NetOurIP \n");
+			printf("\x1b[32m \n _NetOurIP \n \x1b[0m");
 			return;
 		}
 
@@ -1388,7 +1388,7 @@ NetReceive(volatile uchar * inpkt, int len)
 			return;
 		}
 		if (!NetCksumOk((uchar *)ip, IP_HDR_SIZE_NO_UDP / 2)) {
-			puts ("checksum bad\n");
+			puts ("\x1b[32m checksum bad\n \x1b[0m");
 			return;
 		}
 		tmp = NetReadIP(&ip->ip_dst);
@@ -1729,3 +1729,96 @@ IPaddr_t getenv_IPaddr (char *var)
 	return (string_to_ip(getenv(var)));
 }
 
+
+
+//=======================================================================================================================================================================================
+//=======================================================================================================================================================================================
+//=======================================================================================================================================================================================
+#include "arch/cc.h"
+#include "lwip/ip_addr.h"
+#include "ethernetif.h" // ethernetif_init()
+#include "etharp.h" // ethernet_input()
+#include "stats.h" // LINK_STATS_INC()
+
+unsigned char webfailsafe_ready_for_upgrade = 0;
+unsigned char httpd_is_running = 1;
+
+struct netif lwip_netif = {0}; //定义一个全局的网络接口
+struct ip_addr ipaddr = {0}, netmask = {0}, gw = {0};
+IPaddr_t   tmp_ip_addr = 0;
+
+void lwip_init_task(IPaddr_t tmp_ip_addr)
+{
+	printf( "HTTP server is starting at IP: %ld.%ld.%ld.%ld\n",  (tmp_ip_addr >> 24) & 0xFF, (tmp_ip_addr >> 16) & 0xFF, (tmp_ip_addr >> 8) & 0xFF,  tmp_ip_addr & 0xFF);
+	struct netif *netif_init_flag = NULL;          //调用netif_add()函数时的返回值,用于判断网络初始化是否成功
+
+/*
+	[IP_addr]: 192.168.1.1;
+	[Submask]: 255.255.255.0;
+	[GateWay]: 192.168.1.8;
+*/
+	IP4_ADDR(&gw, 192, 168, 1, 8);
+	IP4_ADDR(&ipaddr, 192, 168, 1, 1);
+	// IP4_ADDR(&ipaddr, (tmp_ip_addr >> 24) & 0xFF, (tmp_ip_addr >> 16) & 0xFF, (tmp_ip_addr >> 8) & 0xFF,  tmp_ip_addr & 0xFF);
+	IP4_ADDR(&netmask, 255,  255, 255, 0);
+
+	// netif_init_flag = netif_add(&lwip_netif, &ipaddr, &netmask, &gw, NULL, __netif_init, ethernet_input);
+	netif_init_flag = netif_add(&lwip_netif, &ipaddr, &netmask, &gw, NULL, ethernetif_init, ethernet_input);
+	if(netif_init_flag == ERR_OK)
+	{
+	  	printf("====>[%s:%u]\n", __FUNCTION__, __LINE__);
+		netif_set_default(&lwip_netif);
+		netif_set_up(&lwip_netif);
+	}
+
+	printf("====>[%s:%u]\n", __FUNCTION__, __LINE__);
+}
+
+int rx_Handler(void)
+{
+	unsigned int i=0;
+
+	ethernetif_input(&lwip_netif); //从网络缓冲区中读取接收到的数据包并将其发送给LWIP处理
+//	sys_check_timeouts(); // sleep sometime
+
+	printf("====>[%s:%u]\n", __FUNCTION__, __LINE__);
+	return 0;
+}
+
+
+int NetLoopHttpd(void)
+{
+	// [Step_1]
+	lwip_init();
+
+	// [Step_2]
+	lwip_init_task(tmp_ip_addr); // start Lwip server
+
+	// [Step_3]
+	printf("Setup httpd starting\n");
+	httpd_is_running = 1;
+
+	// [Step_4]
+	netif_set_link_up(&lwip_netif);
+
+	// infinite loop
+	for ( ; ; )
+	{
+		rx_Handler();
+#if 0
+		/* Check for received frames, feed them to lwIP */
+		struct pbuf* p = /*eth_recv*/();
+		if(p != NULL)
+		{
+			LINK_STATS_INC(link.recv);
+
+			//if(lwip_netif.input(p, &lwip_netif) != ERR_OK)
+			{
+				pbuf_free(p);
+			}
+		}
+
+		sys_check_timeouts();
+#endif
+	}
+}

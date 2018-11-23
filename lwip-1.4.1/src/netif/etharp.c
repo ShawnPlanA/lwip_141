@@ -744,14 +744,39 @@ etharp_arp_input(struct netif *netif, struct eth_addr *ethaddr, struct pbuf *p)
    * structure packing (not using structure copy which breaks strict-aliasing rules). */
   IPADDR2_COPY(&sipaddr, &hdr->sipaddr);
   IPADDR2_COPY(&dipaddr, &hdr->dipaddr);
+  LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("S_ip address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	ip4_addr1_16(&sipaddr),
+	ip4_addr2_16(&sipaddr),
+	ip4_addr3_16(&sipaddr),
+	ip4_addr4_16(&sipaddr)));
+  LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("D_ip address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	ip4_addr1_16(&dipaddr),
+	ip4_addr2_16(&dipaddr),
+	ip4_addr3_16(&dipaddr),
+	ip4_addr4_16(&dipaddr)));
 
   /* this interface is not configured? */
   if (ip_addr_isany(&netif->ip_addr)) {
     for_us = 0;
+	printf("[%s:%u]\n", __FUNCTION__, __LINE__);
   } else {
     /* ARP packet directed to us? */
+    printf("[%s:%u]\n", __FUNCTION__, __LINE__);
+	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: IP address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	  ip4_addr1_16(&netif->ip_addr),
+	  ip4_addr2_16(&netif->ip_addr),
+	  ip4_addr3_16(&netif->ip_addr),
+	  ip4_addr4_16(&netif->ip_addr)));
+	LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("netif: DIP address %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+	  ip4_addr1_16(&dipaddr),
+	  ip4_addr2_16(&dipaddr),
+	  ip4_addr3_16(&dipaddr),
+	  ip4_addr4_16(&dipaddr)));
+
     for_us = (u8_t)ip_addr_cmp(&dipaddr, &(netif->ip_addr));
   }
+
+  printf("====>   for_us = %d\n", for_us);
 
   /* ARP message directed to us?
       -> add IP address in ARP cache; assume requester wants to talk to us,

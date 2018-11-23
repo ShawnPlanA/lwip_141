@@ -10,7 +10,7 @@
 #define MEM_ALIGNMENT           4  
 
 //MEM_SIZE:heap内存的大小,如果在应用中有大量数据发送的话这个值最好设置大一点 
-#define MEM_SIZE                16000 //内存堆大小
+#define MEM_SIZE                (32 * 1024 * 1024)  //内存堆大小 32MB，根据实际情况来决定
 
 //MEMP_NUM_PBUF:memp结构的pbuf数量,如果应用从ROM或者静态存储区发送大量数据时,这个值应该设置大一点
 #define MEMP_NUM_PBUF           10
@@ -25,18 +25,19 @@
 #define MEMP_NUM_TCP_PCB_LISTEN 6
 
 //MEMP_NUM_TCP_SEG:最多同时在队列中的TCP段数量
-#define MEMP_NUM_TCP_SEG        15
+#define MEMP_NUM_TCP_SEG        TCP_SND_QUEUELEN
 
 //MEMP_NUM_SYS_TIMEOUT:能够同时激活的timeout个数
-#define MEMP_NUM_SYS_TIMEOUT    8
+#define MEMP_NUM_SYS_TIMEOUT    16
 
 
 /* ---------- Pbuf选项---------- */
 //PBUF_POOL_SIZE:pbuf内存池个数. 
-#define PBUF_POOL_SIZE          20
+#define PBUF_POOL_SIZE          400 /* pbuf tests need ~200KByte */
+
 
 //PBUF_POOL_BUFSIZE:每个pbuf内存池大小. 
-#define PBUF_POOL_BUFSIZE       512
+//#define PBUF_POOL_BUFSIZE       512
 
 
 /* ---------- TCP选项---------- */
@@ -50,13 +51,13 @@
 #define TCP_MSS                 (1500 - 40)	  //TCP_MSS = (MTU - IP报头大小 - TCP报头大小
 
 //TCP发送缓冲区大小(bytes).
-#define TCP_SND_BUF             (4*TCP_MSS)
+#define TCP_SND_BUF             (12 * TCP_MSS)
 
 //TCP_SND_QUEUELEN: TCP发送缓冲区大小(pbuf).这个值最小为(2 * TCP_SND_BUF/TCP_MSS) 
-#define TCP_SND_QUEUELEN        (2* TCP_SND_BUF/TCP_MSS)
+#define TCP_SND_QUEUELEN        40 //(2* TCP_SND_BUF/TCP_MSS)
 
 //TCP发送窗口
-#define TCP_WND                 (2*TCP_MSS)
+#define TCP_WND                 (10 * TCP_MSS)
 
 
 /* ---------- ICMP选项---------- */
@@ -135,6 +136,6 @@
    ----------------------------------------
 */
 #define LWIP_DEBUG                     1 //开启DEBUG选项
-#define ICMP_DEBUG                      LWIP_DBG_OFF //开启/关闭ICMPdebug
+#define ICMP_DEBUG                      LWIP_DBG_ON //开启/关闭ICMPdebug
 
 #endif /* __LWIPOPTS_H__ */
