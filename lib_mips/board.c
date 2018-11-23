@@ -887,6 +887,7 @@ __attribute__((nomips16)) void board_init_f(ulong bootflag)
 #define SEL_LOAD_LINUX_WRITE_FLASH      2
 #define SEL_BOOT_FLASH                  3
 #define SEL_ENTER_CLI                   4
+#define SEL_LWIP				5
 #define SEL_LOAD_BOOT_WRITE_FLASH_BY_SERIAL 7
 #define SEL_LOAD_BOOT_SDRAM             8
 #define SEL_LOAD_BOOT_WRITE_FLASH       9
@@ -901,6 +902,7 @@ void OperationSelect(void)
 #ifdef RALINK_CMDLINE
 	printf("   %d: Entr boot command line interface.\n", SEL_ENTER_CLI);
 #endif // RALINK_CMDLINE //
+	printf("   %d: Enter Lwip Httpd\n", SEL_LWIP);
 #ifdef RALINK_UPGRADE_BY_SERIAL
 	printf("   %d: Load Boot Loader code then write to Flash via Serial. \n", SEL_LOAD_BOOT_WRITE_FLASH_BY_SERIAL);
 #endif // RALINK_UPGRADE_BY_SERIAL //
@@ -2131,6 +2133,11 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 			do_reset(cmdtp, 0, argc, argv);
 			break;
 #endif // RALINK_UPGRADE_BY_SERIAL //
+		case '5':
+			printf("case  LWIP\n");
+			eth_initialize(gd->bd);
+			NetLoopHttpd();
+			break;
 		case '8':
 			printf("   \n%d: System Load UBoot to SDRAM via TFTP. \n", SEL_LOAD_BOOT_SDRAM);
 			tftp_config(SEL_LOAD_BOOT_SDRAM, argv);

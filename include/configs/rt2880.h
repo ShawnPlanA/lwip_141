@@ -92,12 +92,14 @@ extern unsigned int  CFG_BLOCKSIZE;
 
 #define SERIAL_CLOCK_DIVISOR 16
 
-#define CONFIG_BOOTDELAY	5	/* autoboot after 5 seconds	*/
+#define CONFIG_BOOTDELAY	3	/* autoboot after 5 seconds	*/
 
 #define CONFIG_BAUDRATE		57600
 
-#define CONFIG_SERVERIP 10.10.10.3
-#define CONFIG_IPADDR 10.10.10.123
+#define CONFIG_BOOTFILE "uboot.bin"
+
+#define CONFIG_SERVERIP 192.168.1.100
+#define CONFIG_IPADDR 192.168.1.1
 #define CONFIG_ETHADDR "00:AA:BB:CC:DD:10"
 /* valid baudrates */
 #define CFG_BAUDRATE_TABLE	{ 9600, 19200, 38400, 57600, 115200 }
@@ -329,7 +331,8 @@ extern unsigned int  CFG_BLOCKSIZE;
 #define CFG_CONFIG_SIZE		(CFG_BLOCKSIZE<<2)
 #define CFG_FACTORY_SIZE	(CFG_BLOCKSIZE<<1)
 #else
-#define CFG_BOOTLOADER_SIZE	0x30000
+//#define CFG_BOOTLOADER_SIZE	0x30000 // 192 KB
+#define CFG_BOOTLOADER_SIZE	0x40000 // for ml uboot
 #define CFG_CONFIG_SIZE		0x10000
 #define CFG_FACTORY_SIZE	0x10000
 #endif

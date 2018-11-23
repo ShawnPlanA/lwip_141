@@ -48,6 +48,7 @@ CONFIG_CROSS_COMPILER_PATH ?= /opt/mips-2012.03/bin/
 else
 CONFIG_CROSS_COMPILER_PATH ?= /opt/buildroot-gcc342/bin
 endif
+export CONFIG_CROSS_COMPILER_PATH
 
 ifeq (include/config.mk,$(wildcard include/config.mk))
 # load ARCH, BOARD, and CPU configuration
@@ -190,6 +191,11 @@ LIBS += cpu/$(CPU)/$(SOC)/lib$(SOC).a
 endif
 LIBS += lib_$(ARCH)/lib$(ARCH).a
 LIBS += net/libnet.a
+
+###################### add by Shawn.Luo
+LIBS += lwip-1.4.0/src/liblwip.a
+#LIBS += lwip-1.4.0/test/unit/liblwipapp.a
+
 
 #LIBS += rtc/librtc.a
 LIBS += drivers/libdrivers.a
