@@ -185,7 +185,7 @@ struct dns_table_entry {
 #if DNS_LOCAL_HOSTLIST_IS_DYNAMIC
 /** Local host-list. For hostnames in this list, no
  *  external name resolution is performed */
-static struct local_hostlist_entry *local_hostlist_dynamic;
+static struct local_hostlist_entry *local_hostlist_dynamic = NULL;
 #else /* DNS_LOCAL_HOSTLIST_IS_DYNAMIC */
 
 /** Defining this allows the local_hostlist_static to be placed in a different
@@ -216,13 +216,13 @@ static void dns_check_entries(void);
  *----------------------------------------------------------------------------*/
 
 /* DNS variables */
-static struct udp_pcb        *dns_pcb;
-static u8_t                   dns_seqno;
-static struct dns_table_entry dns_table[DNS_TABLE_SIZE];
-static ip_addr_t              dns_servers[DNS_MAX_SERVERS];
+static struct udp_pcb        *dns_pcb = NULL;
+static u8_t                   dns_seqno = 0;
+static struct dns_table_entry dns_table[DNS_TABLE_SIZE] = {0};
+static ip_addr_t              dns_servers[DNS_MAX_SERVERS] = {0};
 /** Contiguous buffer for processing responses */
-static u8_t                   dns_payload_buffer[LWIP_MEM_ALIGN_BUFFER(DNS_MSG_SIZE)];
-static u8_t*                  dns_payload;
+static u8_t                   dns_payload_buffer[LWIP_MEM_ALIGN_BUFFER(DNS_MSG_SIZE)] = {0};
+static u8_t*                  dns_payload = NULL;
 
 /**
  * Initialize the resolver: set up the UDP pcb and configure the default server

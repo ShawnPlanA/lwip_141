@@ -97,19 +97,19 @@
  * The interface that provided the packet for the current callback
  * invocation.
  */
-struct netif *current_netif;
+struct netif *current_netif = NULL;
 
 /**
  * Header of the input packet currently being processed.
  */
-const struct ip_hdr *current_header;
+const struct ip_hdr *current_header = NULL;
 /** Source IP address of current_header */
-ip_addr_t current_iphdr_src;
+ip_addr_t current_iphdr_src = {0};
 /** Destination IP address of current_header */
-ip_addr_t current_iphdr_dest;
+ip_addr_t current_iphdr_dest = {0};
 
 /** The IP header ID of the next outgoing IP packet */
-static u16_t ip_id;
+static u16_t ip_id = 0;
 
 /**
  * Finds the appropriate network interface for a given IP address. It

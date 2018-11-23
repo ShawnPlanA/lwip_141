@@ -123,12 +123,12 @@ struct lwip_setgetsockopt_data {
 };
 
 /** The global array of available sockets */
-static struct lwip_sock sockets[NUM_SOCKETS];
+static struct lwip_sock sockets[NUM_SOCKETS] = {NULL};
 /** The global list of tasks waiting for select */
-static struct lwip_select_cb *select_cb_list;
+static struct lwip_select_cb *select_cb_list = NULL;
 /** This counter is increased from lwip_select when the list is chagned
     and checked in event_callback to see if it has changed. */
-static volatile int select_cb_ctr;
+static volatile int select_cb_ctr = 0;
 
 /** Table to quickly map an lwIP error (err_t) to a socket error
   * by using -err as an index */

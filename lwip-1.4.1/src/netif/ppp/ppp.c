@@ -250,9 +250,9 @@ static void pppFreeCurrentInputPacket(PPPControlRx *pcrx);
 /******************************/
 /*** PUBLIC DATA STRUCTURES ***/
 /******************************/
-u_long subnetMask;
+u_long subnetMask = 0;
 
-static PPPControl pppControl[NUM_PPP]; /* The PPP interface control blocks. */
+static PPPControl pppControl[NUM_PPP] = {0}; /* The PPP interface control blocks. */
 
 /*
  * PPP Data Link Layer "protocol" table.
@@ -282,7 +282,7 @@ struct protent *ppp_protocols[] = {
  * Buffers for outgoing packets.  This must be accessed only from the appropriate
  * PPP task so that it doesn't need to be protected to avoid collisions.
  */
-u_char outpacket_buf[NUM_PPP][PPP_MRU+PPP_HDRLEN];
+u_char outpacket_buf[NUM_PPP][PPP_MRU+PPP_HDRLEN] = {0};
 
 
 /*****************************/
@@ -433,7 +433,7 @@ pppHup(int pd)
 /***********************************/
 /* Initialize the PPP subsystem. */
 
-struct ppp_settings ppp_settings;
+struct ppp_settings ppp_settings = {0};
 
 void
 pppInit(void)

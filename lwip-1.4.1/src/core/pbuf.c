@@ -100,7 +100,7 @@
 #endif /* PBUF_POOL_FREE_OOSEQ_QUEUE_CALL */
 #endif /* !NO_SYS */
 
-volatile u8_t pbuf_free_ooseq_pending;
+volatile u8_t pbuf_free_ooseq_pending = 0;
 #define PBUF_POOL_IS_EMPTY() pbuf_pool_is_empty()
 
 /**

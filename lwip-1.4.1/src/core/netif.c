@@ -72,13 +72,13 @@
 #define NETIF_LINK_CALLBACK(n)
 #endif /* LWIP_NETIF_LINK_CALLBACK */ 
 
-struct netif *netif_list;
-struct netif *netif_default;
+struct netif *netif_list = {NULL};
+struct netif *netif_default = {NULL};
 
-static u8_t netif_num;
+static u8_t netif_num = 0;
 
 #if LWIP_HAVE_LOOPIF
-static struct netif loop_netif;
+static struct netif loop_netif = {0};
 
 /**
  * Initialize a lwip network interface structure for a loopback interface

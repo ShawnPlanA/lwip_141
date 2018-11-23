@@ -105,8 +105,8 @@ PACK_STRUCT_END
    IPH_ID(iphdrA) == IPH_ID(iphdrB)) ? 1 : 0
 
 /* global variables */
-static struct ip_reassdata *reassdatagrams;
-static u16_t ip_reass_pbufcount;
+static struct ip_reassdata *reassdatagrams = NULL;
+static u16_t ip_reass_pbufcount = 0;
 
 /* function prototypes */
 static void ip_reass_dequeue_datagram(struct ip_reassdata *ipr, struct ip_reassdata *prev);

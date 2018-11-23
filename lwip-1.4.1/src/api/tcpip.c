@@ -50,13 +50,13 @@
 #include "netif/ppp_oe.h"
 
 /* global variables */
-static tcpip_init_done_fn tcpip_init_done;
-static void *tcpip_init_done_arg;
-static sys_mbox_t mbox;
+static tcpip_init_done_fn tcpip_init_done = NULL;
+static void *tcpip_init_done_arg = NULL;
+static sys_mbox_t mbox = 0;
 
 #if LWIP_TCPIP_CORE_LOCKING
 /** The global semaphore to lock the stack. */
-sys_mutex_t lock_tcpip_core;
+sys_mutex_t lock_tcpip_core = 0;
 #endif /* LWIP_TCPIP_CORE_LOCKING */
 
 

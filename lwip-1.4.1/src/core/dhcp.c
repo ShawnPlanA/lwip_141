@@ -126,15 +126,15 @@
 
 /** Holds the decoded option values, only valid while in dhcp_recv.
     @todo: move this into struct dhcp? */
-u32_t dhcp_rx_options_val[DHCP_OPTION_IDX_MAX];
+u32_t dhcp_rx_options_val[DHCP_OPTION_IDX_MAX] = {0};
 /** Holds a flag which option was received and is contained in dhcp_rx_options_val,
     only valid while in dhcp_recv.
     @todo: move this into struct dhcp? */
-u8_t  dhcp_rx_options_given[DHCP_OPTION_IDX_MAX];
+u8_t  dhcp_rx_options_given[DHCP_OPTION_IDX_MAX] = {0};
 
 #ifdef DHCP_GLOBAL_XID
-static u32_t xid;
-static u8_t xid_initialised;
+static u32_t xid;=0
+static u8_t xid_initialised = 0;
 #endif /* DHCP_GLOBAL_XID */
 
 #define dhcp_option_given(dhcp, idx)          (dhcp_rx_options_given[idx] != 0)

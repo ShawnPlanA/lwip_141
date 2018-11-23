@@ -59,17 +59,17 @@
 /* These variables are global to all functions involved in the input
    processing of TCP segments. They are set by the tcp_input()
    function. */
-static struct tcp_seg inseg;
-static struct tcp_hdr *tcphdr;
-static struct ip_hdr *iphdr;
-static u32_t seqno, ackno;
-static u8_t flags;
-static u16_t tcplen;
+static struct tcp_seg inseg = {NULL};
+static struct tcp_hdr *tcphdr = NULL;
+static struct ip_hdr *iphdr = NULL;
+static u32_t seqno = 0, ackno = 0;
+static u8_t flags = 0;
+static u16_t tcplen = 0;
 
-static u8_t recv_flags;
-static struct pbuf *recv_data;
+static u8_t recv_flags = 0;
+static struct pbuf *recv_data = NULL;
 
-struct tcp_pcb *tcp_input_pcb;
+struct tcp_pcb *tcp_input_pcb = NULL;
 
 /* Forward declarations. */
 static err_t tcp_process(struct tcp_pcb *pcb);

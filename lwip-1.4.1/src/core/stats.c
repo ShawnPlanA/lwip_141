@@ -46,7 +46,7 @@
 
 #include <string.h>
 
-struct stats_ lwip_stats;
+struct stats_ lwip_stats = {0};
 
 void stats_init(void)
 {

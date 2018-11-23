@@ -179,25 +179,25 @@ struct mem {
  * how that space is calculated). */
 #ifndef LWIP_RAM_HEAP_POINTER
 /** the heap. we need one struct mem at the end and some room for alignment */
-u8_t ram_heap[MEM_SIZE_ALIGNED + (2*SIZEOF_STRUCT_MEM) + MEM_ALIGNMENT];
+u8_t ram_heap[MEM_SIZE_ALIGNED + (2*SIZEOF_STRUCT_MEM) + MEM_ALIGNMENT] = {0};
 #define LWIP_RAM_HEAP_POINTER ram_heap
 #endif /* LWIP_RAM_HEAP_POINTER */
 
 /** pointer to the heap (ram_heap): for alignment, ram is now a pointer instead of an array */
-static u8_t *ram;
+static u8_t *ram = NULL;
 /** the last entry, always unused! */
-static struct mem *ram_end;
+static struct mem *ram_end = {NULL};
 /** pointer to the lowest free block, this is used for faster search */
-static struct mem *lfree;
+static struct mem *lfree = {NULL};
 
 /** concurrent access protection */
 #if !NO_SYS
-static sys_mutex_t mem_mutex;
+static sys_mutex_t mem_mutex = 0;
 #endif
 
 #if LWIP_ALLOW_MEM_FREE_FROM_OTHER_CONTEXT
 
-static volatile u8_t mem_free_count;
+static volatile u8_t mem_free_count = 0;
 
 /* Allow mem_free from other (e.g. interrupt) context */
 #define LWIP_MEM_FREE_DECL_PROTECT()  SYS_ARCH_DECL_PROTECT(lev_free)

@@ -110,7 +110,7 @@
 #ifndef PPPOE_ERRORSTRING_LEN
 #define PPPOE_ERRORSTRING_LEN     64
 #endif
-static char pppoe_error_tmp[PPPOE_ERRORSTRING_LEN];
+static char pppoe_error_tmp[PPPOE_ERRORSTRING_LEN] = {0};
 
 
 /* input routines */
@@ -138,7 +138,7 @@ static struct pppoe_softc * pppoe_find_softc_by_session(u_int, struct netif *);
 static struct pppoe_softc * pppoe_find_softc_by_hunique(u8_t *, size_t, struct netif *);
 
 /** linked list of created pppoe interfaces */
-static struct pppoe_softc *pppoe_softc_list;
+static struct pppoe_softc *pppoe_softc_list = NULL;
 
 err_t
 pppoe_create(struct netif *ethif, int pd, void (*linkStatusCB)(int pd, int up), struct pppoe_softc **scptr)
