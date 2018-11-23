@@ -1895,42 +1895,42 @@
  * ETHARP_DEBUG: Enable debugging in etharp.c.
  */
 #ifndef ETHARP_DEBUG
-#define ETHARP_DEBUG                    LWIP_DBG_OFF
+#define ETHARP_DEBUG                    LWIP_DBG_ON
 #endif
 
 /**
  * NETIF_DEBUG: Enable debugging in netif.c.
  */
 #ifndef NETIF_DEBUG
-#define NETIF_DEBUG                     LWIP_DBG_OFF
+#define NETIF_DEBUG                     LWIP_DBG_ON
 #endif
 
 /**
  * PBUF_DEBUG: Enable debugging in pbuf.c.
  */
 #ifndef PBUF_DEBUG
-#define PBUF_DEBUG                      LWIP_DBG_OFF
+#define PBUF_DEBUG                      LWIP_DBG_ON
 #endif
 
 /**
  * API_LIB_DEBUG: Enable debugging in api_lib.c.
  */
 #ifndef API_LIB_DEBUG
-#define API_LIB_DEBUG                   LWIP_DBG_OFF
+#define API_LIB_DEBUG                   LWIP_DBG_ON
 #endif
 
 /**
  * API_MSG_DEBUG: Enable debugging in api_msg.c.
  */
 #ifndef API_MSG_DEBUG
-#define API_MSG_DEBUG                   LWIP_DBG_OFF
+#define API_MSG_DEBUG                   LWIP_DBG_ON
 #endif
 
 /**
  * SOCKETS_DEBUG: Enable debugging in sockets.c.
  */
 #ifndef SOCKETS_DEBUG
-#define SOCKETS_DEBUG                   LWIP_DBG_OFF
+#define SOCKETS_DEBUG                   LWIP_DBG_ON
 #endif
 
 /**
@@ -1951,14 +1951,14 @@
  * INET_DEBUG: Enable debugging in inet.c.
  */
 #ifndef INET_DEBUG
-#define INET_DEBUG                      LWIP_DBG_OFF
+#define INET_DEBUG                      LWIP_DBG_ON
 #endif
 
 /**
  * IP_DEBUG: Enable debugging for IP.
  */
 #ifndef IP_DEBUG
-#define IP_DEBUG                        LWIP_DBG_OFF
+#define IP_DEBUG                        LWIP_DBG_ON
 #endif
 
 /**
@@ -1972,14 +1972,14 @@
  * RAW_DEBUG: Enable debugging in raw.c.
  */
 #ifndef RAW_DEBUG
-#define RAW_DEBUG                       LWIP_DBG_OFF
+#define RAW_DEBUG                       LWIP_DBG_ON
 #endif
 
 /**
  * MEM_DEBUG: Enable debugging in mem.c.
  */
 #ifndef MEM_DEBUG
-#define MEM_DEBUG                       LWIP_DBG_OFF
+#define MEM_DEBUG                       LWIP_DBG_ON
 #endif
 
 /**
@@ -2014,7 +2014,7 @@
  * TCP_INPUT_DEBUG: Enable debugging in tcp_in.c for incoming debug.
  */
 #ifndef TCP_INPUT_DEBUG
-#define TCP_INPUT_DEBUG                 LWIP_DBG_OFF
+#define TCP_INPUT_DEBUG                 LWIP_DBG_ON
 #endif
 
 /**
@@ -2050,7 +2050,7 @@
  * TCP_OUTPUT_DEBUG: Enable debugging in tcp_out.c output functions.
  */
 #ifndef TCP_OUTPUT_DEBUG
-#define TCP_OUTPUT_DEBUG                LWIP_DBG_OFF
+#define TCP_OUTPUT_DEBUG                LWIP_DBG_ON
 #endif
 
 /**
