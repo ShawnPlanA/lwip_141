@@ -304,8 +304,8 @@ return_noroute:
 err_t
 ip_input(struct pbuf *p, struct netif *inp)
 {
-  struct ip_hdr *iphdr;
-  struct netif *netif;
+  struct ip_hdr *iphdr = NULL;
+  struct netif *netif = NULL;
   u16_t iphdr_hlen;
   u16_t iphdr_len;
 #if IP_ACCEPT_LINK_LAYER_ADDRESSING
@@ -392,6 +392,9 @@ ip_input(struct pbuf *p, struct netif *inp)
     } else {
       netif = NULL;
     }
+
+	if (netif == NULL)
+		LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_TRACE, ("[ERR] netif  is NULL;[%s:%u]\n", __FUNCTION__, __LINE__));
   } else
 #endif /* LWIP_IGMP */
   {
@@ -399,6 +402,11 @@ ip_input(struct pbuf *p, struct netif *inp)
        list of configured netifs.
        'first' is used as a boolean to mark whether we started walking the list */
     int first = 1;
+
+	// [Note] Code runing  here;
+	if (netif == NULL)
+		LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_TRACE, ("\x1b[32m [ERR] netif	is NULL;[%s:%u]\x1b[0m\n", __FUNCTION__, __LINE__));
+
     netif = inp;
     do {
       LWIP_DEBUGF(IP_DEBUG, ("ip_input: iphdr->dest 0x%"X32_F" netif->ip_addr 0x%"X32_F" (0x%"X32_F", 0x%"X32_F", 0x%"X32_F")\n",
@@ -406,6 +414,18 @@ ip_input(struct pbuf *p, struct netif *inp)
           ip4_addr_get_u32(&iphdr->dest) & ip4_addr_get_u32(&netif->netmask),
           ip4_addr_get_u32(&netif->ip_addr) & ip4_addr_get_u32(&netif->netmask),
           ip4_addr_get_u32(&iphdr->dest) & ~ip4_addr_get_u32(&netif->netmask)));
+
+	  LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("[OK] s_ip  %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+		ip4_addr1_16(&netif->ip_addr),
+		ip4_addr2_16(&netif->ip_addr),
+		ip4_addr3_16(&netif->ip_addr),
+		ip4_addr4_16(&netif->ip_addr)));
+
+	  LWIP_DEBUGF(NETIF_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("[OK] d_ip  %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
+		ip4_addr1_16(&iphdr->dest),
+		ip4_addr2_16(&iphdr->dest),
+		ip4_addr3_16(&iphdr->dest),
+		ip4_addr4_16(&iphdr->dest)));
 
       /* interface is up and configured? */
       if ((netif_is_up(netif)) && (!ip_addr_isany(&(netif->ip_addr)))) {
@@ -433,14 +453,21 @@ ip_input(struct pbuf *p, struct netif *inp)
       if (first) {
         first = 0;
         netif = netif_list;
+	    printf("[%s:%u]\n", __FUNCTION__, __LINE__);
       } else {
+	  	printf("[%s:%u]\n", __FUNCTION__, __LINE__);
         netif = netif->next;
       }
       if (netif == inp) {
+	  	printf("[%s:%u]\n", __FUNCTION__, __LINE__);
         netif = netif->next;
       }
     } while(netif != NULL);
   }
+
+
+  if (netif == NULL)
+	  LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_TRACE, ("\x1b[32m [ERR] netif	is NULL;[%s:%u]\x1b[0m\n", __FUNCTION__, __LINE__));
 
 #if IP_ACCEPT_LINK_LAYER_ADDRESSING
   /* Pass DHCP messages regardless of destination address. DHCP traffic is addressed
@@ -466,6 +493,9 @@ ip_input(struct pbuf *p, struct netif *inp)
     }
   }
 #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
+
+  if (netif == NULL)
+	  LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_TRACE, ("\x1b[32m [ERR] netif	is NULL;[%s:%u]\x1b[0m\n", __FUNCTION__, __LINE__));
 
   /* broadcast or multicast packet source address? Compliant with RFC 1122: 3.2.1.3 */
 #if IP_ACCEPT_LINK_LAYER_ADDRESSING
