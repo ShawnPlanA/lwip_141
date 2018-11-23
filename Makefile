@@ -193,8 +193,8 @@ LIBS += lib_$(ARCH)/lib$(ARCH).a
 LIBS += net/libnet.a
 
 ###################### add by Shawn.Luo
-LIBS += lwip-1.4.0/src/liblwip.a
-#LIBS += lwip-1.4.0/test/unit/liblwipapp.a
+LIBS += lwip-1.4.1/src/liblwip.a
+#LIBS += lwip-1.4.1/test/unit/liblwipapp.a
 
 
 #LIBS += rtc/librtc.a

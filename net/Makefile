@@ -25,10 +25,10 @@ include $(TOPDIR)/config.mk
 
 # CFLAGS += -DET_DEBUG -DDEBUG
 CFLAGS += \
-	-I../lwip-1.4.0/src/include/ \
-	-I../lwip-1.4.0/src/include/ipv4/ \
-	-I../lwip-1.4.0/src/include/lwip/ \
-	-I../lwip-1.4.0/src/include/netif/ 
+	-I../lwip-1.4.1/src/include/ \
+	-I../lwip-1.4.1/src/include/ipv4/ \
+	-I../lwip-1.4.1/src/include/lwip/ \
+	-I../lwip-1.4.1/src/include/netif/ 
 
 
 LIB	= libnet.a
