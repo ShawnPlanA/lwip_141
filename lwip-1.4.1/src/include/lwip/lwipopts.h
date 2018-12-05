@@ -1,19 +1,19 @@
 #ifndef __LWIPOPTS_H__
 #define __LWIPOPTS_H__
 
-#define SYS_LIGHTWEIGHT_PROT    0
 
 //NO_SYS==1:不使用操作系统
 #define NO_SYS                  1  //不使用UCOS操作系统
+#define SYS_LIGHTWEIGHT_PROT    0
 
-//使用4字节对齐模式
-#define MEM_ALIGNMENT           4  
-
-//MEM_SIZE:heap内存的大小,如果在应用中有大量数据发送的话这个值最好设置大一点 
-#define MEM_SIZE                (32 * 1024 * 1024)  //内存堆大小 32MB，根据实际情况来决定
+#define MEM_ALIGNMENT           4   //使用4字节对齐模式
+#define MEMP_MEM_MALLOC		1
+#define MEM_SIZE                (32 * 1024 * 1024)  //内存堆大小 32MB，根据实际情况来决定; //MEM_SIZE:heap内存的大小,如果在应用中有大量数据发送的话这个值最好设置大一点 
+#define MEMP_OVERFLOW_CHECK				1
+#define MEMP_NUM_SYS_TIMEOUT    16 //MEMP_NUM_SYS_TIMEOUT:能够同时激活的timeout个数
 
 //MEMP_NUM_PBUF:memp结构的pbuf数量,如果应用从ROM或者静态存储区发送大量数据时,这个值应该设置大一点
-#define MEMP_NUM_PBUF           10
+//#define MEMP_NUM_PBUF           10
 
 //MEMP_NUM_UDP_PCB:UDP协议控制块(PCB)数量.每个活动的UDP"连接"需要一个PCB.
 #define MEMP_NUM_UDP_PCB        6
@@ -26,9 +26,6 @@
 
 //MEMP_NUM_TCP_SEG:最多同时在队列中的TCP段数量
 #define MEMP_NUM_TCP_SEG        TCP_SND_QUEUELEN
-
-//MEMP_NUM_SYS_TIMEOUT:能够同时激活的timeout个数
-#define MEMP_NUM_SYS_TIMEOUT    16
 
 
 /* ---------- Pbuf选项---------- */
@@ -129,7 +126,6 @@
 #define LWIP_COMPAT_MUTEX               1
 #define LWIP_SO_RCVTIMEO                1 //通过定义LWIP_SO_RCVTIMEO使能netconn结构体中recv_timeout,使用recv_timeout可以避免阻塞线程
 
-
 /*
    ----------------------------------------
    ---------- Lwip调试选项----------
@@ -137,5 +133,25 @@
 */
 #define LWIP_DEBUG                     1 //开启DEBUG选项
 #define ICMP_DEBUG                      LWIP_DBG_ON //开启/关闭ICMPdebug
+
+
+
+
+
+
+/* Enable IGMP and MDNS for MDNS tests */
+//#define LWIP_IGMP                       1
+//#define LWIP_MDNS_RESPONDER             1
+//#define LWIP_NUM_NETIF_CLIENT_DATA      (LWIP_MDNS_RESPONDER)
+
+/* Minimal changes to opt.h required for tcp unit tests: */
+//#define LWIP_WND_SCALE                  1
+//#define TCP_RCV_SCALE                   0
+
+/* Minimal changes to opt.h required for etharp unit tests: */
+//#define ETHARP_SUPPORT_STATIC_ENTRIES   1
+
+/* MIB2 stats are required to check IPv4 reassembly results */
+//#define MIB2_STATS                      1
 
 #endif /* __LWIPOPTS_H__ */

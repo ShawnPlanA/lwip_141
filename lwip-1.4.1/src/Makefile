@@ -75,8 +75,8 @@ OBJS := $(CORE_OBJ)  $(API_OBJ) $(NETIF_OBJ)  $(ARCH_OBJ)
 
 
 
+#		-fno-zero-initialized-in-bss 
 CFLAGS += \
-		-fno-zero-initialized-in-bss \
 		-I./include/ \
 		-I./include/ipv4/ \
 		-I./include/lwip/ \
